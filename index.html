@@ -185,15 +185,10 @@ footer a{color:#fff;font-weight:800;border-bottom:2px solid var(--red)}
    ========================================================= */
 const CONFIG = {
   channel: "moviesTranslator",   // اسم قناتك على تيليجرام بدون @
-
-  // رابط جدول Google Sheets (اتركه فاضي لعرض النسخة التجريبية).
-  // أفضل رابط: ملف ← مشاركة ← نشر على الويب ← اختار CSV ← انسخ الرابط.
   sheetCsvUrl: "https://docs.google.com/spreadsheets/d/1HYW073V-61WtpWmQJIj5yrFyNQzVlNddmRpzOZW2FcU/gviz/tq?tqx=out:csv",
-
-  pageSize: 20               // عدد الأفلام بكل دفعة بقسم "كل الأفلام"
+  pageSize: 20
 };
 
-/* أفلام تجريبية (مشاع عام) بتظهر فقط إذا ما حطيت رابط الجدول */
 const SAMPLE = [
   {title:"Nosferatu",year:"1922",duration:"94",genre:"رعب, كلاسيكي",story:"يسافر موظف عقارات إلى قلعة غامضة في ترانسيلفانيا ليبيع منزلًا للكونت أورلوك، فيكتشف أنه مصاص دماء يطارد زوجته ويجلب الطاعون إلى المدينة.",link:"https://t.me/cinema_mtrjm/1",featured:"نعم"},
   {title:"Night of the Living Dead",year:"1968",duration:"96",genre:"رعب",story:"مجموعة غرباء تحتمي داخل منزل ريفي بينما تحاصرهم جثث عائدة من الموت، وتتصاعد الخلافات بينهم أكثر من الخطر الخارجي.",link:"https://t.me/cinema_mtrjm/2"},
@@ -204,7 +199,6 @@ const SAMPLE = [
   {title:"Carnival of Souls",year:"1962",duration:"78",genre:"رعب, غموض",story:"امرأة تنجو من حادث سيارة مروّع، ثم تلاحقها رؤى رجل شاحب وبناية مهجورة غامضة.",link:"https://t.me/cinema_mtrjm/7"},
   {title:"The Cabinet of Dr. Caligari",year:"1920",duration:"76",genre:"رعب, كلاسيكي",story:"منوّم مغناطيسي يعرض في معرض متجول نائمًا يتنبأ بالمستقبل، وتتزامن مع ظهورهما جرائم قتل غامضة في البلدة.",link:"https://t.me/cinema_mtrjm/8"}
 ];
-/* ========================================================= */
 
 const $app = document.getElementById("app");
 const $hdr = document.getElementById("hdr");
@@ -218,7 +212,6 @@ document.getElementById("joinTop").href = joinUrl;
 document.getElementById("joinFoot").href = joinUrl;
 document.getElementById("copy").textContent = "© " + new Date().getFullYear() + " Cinema | أفلام مترجمة";
 
-/* ---------- أدوات ---------- */
 function el(tag, props, ...kids) {
   const e = document.createElement(tag);
   if (props) for (const k in props) {
@@ -250,7 +243,6 @@ function parseCSV(text) {
   return rows.filter(r => r.some(x => x.trim() !== ""));
 }
 
-/* روابط صور Google Drive بتتحول لرابط صورة مباشر */
 function fixImageUrl(u) {
   u = (u || "").trim();
   const m = u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]+)/);
@@ -277,7 +269,6 @@ function normalize(list) {
 }
 
 function sheetUrls(u) {
-  // رابط تحرير عادي → روابط تصدير CSV (الجدول لازم يكون مشارك "أي شخص معه الرابط")
   const m = u.match(/\/spreadsheets\/d\/([\w-]+)/);
   if (m && !/\/d\/e\//.test(u) && !/output=csv/.test(u)) {
     const base = "https://docs.google.com/spreadsheets/d/" + m[1];
@@ -334,159 +325,20 @@ function poster(f, overlay) {
 }
 
 function card(f, withStory) {
-  return el("a", { class: "card", href: "?f=" + encodeURIComponent(f.id), onclick: nav(f.id) },
+  return el("a", { class: "card", href: "?f=" + encodeURIComponent(f.id) },
     poster(f, true),
-    el("h3", { dir: "auto" }, f.title),
-    el("div", { class: "yr" }, [f.year, fmtDuration(f.duration)].filter(Boolean).join(" · ")),
-    withStory ? el("p", null, shortStory(f.story)) : null);
+    el("h3", null, f.title),
+    el("div", { class: "yr" }, [f.year, fmtDuration(f.duration)].filter(Boolean).join(" • ")),
+    withStory && f.story ? el("p", null, shortStory(f.story)) : null
+  );
 }
 
-function metaLine(f) {
-  const parts = [];
-  if (f.year) parts.push(el("span", null, f.year));
-  if (f.duration) parts.push(el("span", null, fmtDuration(f.duration)));
-  const out = [];
-  parts.forEach((p, i) => { if (i) out.push(el("i", { class: "dot" })); out.push(p); });
-  out.push(el("span", { class: "badge" }, "ترجمة عربية"));
-  return el("div", { class: "line" }, out);
-}
-
-function rail(title, list) {
-  const r = el("div", { class: "rail" }, list.map(f => card(f, false)));
-  const step = dir => () => r.scrollBy({ left: dir * r.clientWidth * 0.85, behavior: "smooth" });
-  return el("section", { class: "row" },
-    el("div", { class: "wrap" }, el("h2", null, title)),
-    el("button", { class: "arrow r", "aria-label": "السابق", onclick: step(1) }, "›"),
-    r,
-    el("button", { class: "arrow l", "aria-label": "التالي", onclick: step(-1) }, "‹"));
-}
-
-/* ---------- الصفحة الرئيسية ---------- */
-function filtering() { return !!(state.q.trim() || state.genre); }
-
-function filtered() {
-  const q = state.q.trim().toLowerCase();
-  return films.filter(f =>
-    (!state.genre || f.genres.includes(state.genre)) &&
-    (!q || f.title.toLowerCase().includes(q) || f.story.includes(q) || f.genres.some(g => g.includes(q))));
+function matches(f) {
+  if (state.genre && !f.genres.includes(state.genre)) return false;
+  if (!state.q) return true;
+  const q = state.q.toLowerCase();
+  return (f.title + " " + f.story + " " + f.genres.join(" ")).toLowerCase().includes(q);
 }
 
 function renderHome() {
-  document.title = "Cinema | أفلام مترجمة";
-  $app.replaceChildren();
-  $hdr.classList.toggle("solid", scrollY > 30);
-  const feat = films.find(f => f.featured) || films[films.length - 1];
-
-  if (feat) {
-    const src = posterSources(feat)[0];
-    const bg = el("div", { class: "bg empty" });
-    if (src) {
-      const t = new Image();
-      t.onload = () => { bg.style.backgroundImage = `url("${src}")`; bg.classList.remove("empty"); };
-      t.referrerPolicy = "no-referrer"; t.src = src;
-    }
-    $app.append(el("section", { class: "hero" }, bg,
-      el("div", { class: "wrap in" },
-        el("div", { class: "kicker" }, "فيلم مميز"),
-        el("h1", { dir: "auto" }, feat.title),
-        metaLine(feat),
-        el("p", null, feat.story),
-        el("div", { class: "acts" },
-          el("a", { class: "btn btn-white", href: feat.link, target: "_blank", rel: "noopener" }, el("span", { html: TG }), "شاهد على تيليجرام"),
-          el("a", { class: "btn btn-grey", href: "?f=" + encodeURIComponent(feat.id), onclick: nav(feat.id) }, "التفاصيل")))));
-  }
-
-  const genres = [...new Set(films.flatMap(f => f.genres))].sort((a, b) => a.localeCompare(b, "ar"));
-  const input = el("input", { type: "search", placeholder: "ابحث عن فيلم…", value: state.q, "aria-label": "بحث" });
-  input.addEventListener("input", () => { state.q = input.value; state.shown = CONFIG.pageSize; paint(); });
-  const chips = el("div", { class: "chips" }, ["", ...genres].map(g =>
-    el("button", { class: g === state.genre ? "on" : "", onclick: () => { state.genre = g; state.shown = CONFIG.pageSize; const y = scrollY; renderHome(); scrollTo(0, y); } }, g || "الكل")));
-
-  $app.append(el("div", { class: "wrap tools" },
-    el("div", { class: "search", html: '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>' }, input), chips),
-    el("div", { id: "rows" }), el("div", { class: "wrap", id: "list" }));
-  paint();
-}
-
-function paint() {
-  const rows = document.getElementById("rows"), box = document.getElementById("list");
-  rows.replaceChildren();
-  if (!filtering() && films.length >= 6) {
-    const newest = [...films].reverse().slice(0, 14);
-    rows.append(rail("المضاف حديثًا", newest));
-    const counts = {};
-    films.forEach(f => f.genres.forEach(g => counts[g] = (counts[g] || 0) + 1));
-    Object.keys(counts).filter(g => counts[g] >= 3).sort((a, b) => counts[b] - counts[a]).slice(0, 4)
-      .forEach(g => rows.append(rail(g, films.filter(f => f.genres.includes(g)).slice(0, 14))));
-  }
-  const list = filtering() ? filtered() : [...films].reverse();
-  const title = state.genre || (state.q.trim() ? "نتائج البحث" : "كل الأفلام");
-  box.replaceChildren(el("div", { class: "sec" }, el("h2", null, title), el("span", null, list.length + " فيلم")));
-  if (!list.length) { box.append(el("div", { class: "empty-msg" }, "ما لقينا أفلام مطابقة.")); return; }
-  const grid = el("div", { class: "grid" }, list.slice(0, state.shown).map(f => card(f, true)));
-  box.append(grid);
-  if (list.length > state.shown)
-    box.append(el("button", { class: "more", onclick: () => { state.shown += CONFIG.pageSize; paint(); } }, "عرض المزيد"));
-}
-
-/* ---------- صفحة الفيلم ---------- */
-function renderFilm(id) {
-  const f = films.find(x => x.id === id);
-  if (!f) { go(null, true); return; }
-  document.title = f.title + " | Cinema أفلام مترجمة";
-  $app.replaceChildren();
-  $hdr.classList.add("solid");
-  const related = films.filter(x => x.id !== f.id && x.genres.some(g => f.genres.includes(g))).slice(0, 14);
-  const src = posterSources(f)[0];
-
-  const bg = el("div", { class: "fbg" });
-  if (src) { const t = new Image(); t.onload = () => bg.style.backgroundImage = `url("${src}")`; t.referrerPolicy = "no-referrer"; t.src = src; }
-
-  $app.append(el("div", { class: "fpage" }, bg,
-    el("div", { class: "wrap film" },
-      el("a", { class: "back", href: "./", onclick: nav(null) }, "→ كل الأفلام"),
-      el("div", { class: "fgrid" },
-        el("div", { class: "fposter" }, poster(f)),
-        el("div", { class: "finfo" },
-          el("h1", { dir: "auto" }, f.title),
-          metaLine(f),
-          f.genres.length ? el("div", { class: "gen" }, f.genres.map(g => el("span", null, g))) : null,
-          el("h4", null, "قصة الفيلم"),
-          el("p", { class: "story" }, f.story || "—"),
-          el("div", { class: "note" }, "الفيلم بصوته الأصلي الإنجليزي مع ترجمة عربية."),
-          el("div", { class: "cta" },
-            el("a", { class: "btn btn-play", href: f.link, target: "_blank", rel: "noopener" }, el("span", { html: TG }), "شاهد على تيليجرام"),
-            el("a", { class: "btn btn-grey", style: "height:50px", href: joinUrl, target: "_blank", rel: "noopener" }, "انضم للقناة"),
-            el("small", null, "الضغط على الزر بيفتح الفيلم مباشرة بقناتنا على تيليجرام")))))));
-
-  if (related.length) $app.append(rail("أفلام مشابهة", related));
-}
-
-/* ---------- التنقل ---------- */
-function nav(id) { return e => { e.preventDefault(); go(id); }; }
-function go(id, replace) {
-  const url = id ? "?f=" + encodeURIComponent(id) : location.pathname;
-  history[replace ? "replaceState" : "pushState"](null, "", url);
-  route(); scrollTo({ top: 0, left: 0, behavior: "instant" });
-}
-function route() {
-  const id = new URLSearchParams(location.search).get("f");
-  id ? renderFilm(id) : renderHome();
-}
-window.addEventListener("popstate", route);
-window.addEventListener("scroll", () => {
-  if (new URLSearchParams(location.search).get("f")) return;
-  $hdr.classList.toggle("solid", scrollY > 30);
-}, { passive: true });
-document.getElementById("home").addEventListener("click", e => { e.preventDefault(); state.q = ""; state.genre = ""; state.shown = CONFIG.pageSize; go(null); });
-
-/* ---------- تشغيل ---------- */
-(async function init() {
-  $app.append(el("div", { class: "skeleton" }, "جاري التحميل…"));
-  try { films = await loadFilms(); }
-  catch (e) { $app.replaceChildren(el("div", { class: "skeleton" }, "تعذر تحميل الأفلام، جرّب لاحقًا.")); return; }
-  route();
-})();
-</script>
-</body>
-</html>
+ 
