@@ -5,340 +5,91 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cinema | أفلام مترجمة</title>
 <meta name="description" content="أفلام مستقلة وأفلام مشاع عام بترجمة عربية. شاهدها على قناتنا في تيليجرام.">
-<meta property="og:title" content="Cinema | أفلام مترجمة">
-<meta property="og:description" content="أفلام مستقلة وأفلام مشاع عام بترجمة عربية.">
-<meta property="og:type" content="website">
-<meta name="theme-color" content="#0b0b0b">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#0b0b0b; --card:#181818; --line:#262626;
-  --red:#e50914; --red2:#b20710;
-  --text:#f5f5f1; --muted:#a3a3a3;
-  --disp:'Bebas Neue','Tajawal',Impact,sans-serif;
-}
+:root{--bg:#0b0b0b;--card:#181818;--line:#262626;--red:#e50914;--red2:#b20710;--text:#f5f5f1;--muted:#a3a3a3;--disp:'Bebas Neue','Tajawal',Impact,sans-serif;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{overflow-x:hidden}
 body{font-family:'Tajawal',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-button,input{font-family:inherit;color:inherit}
-button{cursor:pointer;border:0;background:none}
-img{display:block;max-width:100%}
-.wrap{max-width:1320px;margin:auto;padding-inline:4%}
-.tgi{width:18px;height:18px;fill:currentColor;flex:none}
-
-/* ===== header ===== */
+a{color:inherit;text-decoration:none}button,input{font-family:inherit;color:inherit}button{cursor:pointer;border:0;background:none}img{display:block;max-width:100%}
+.wrap{max-width:1320px;margin:auto;padding-inline:4%}.tgi{width:18px;height:18px;fill:currentColor;flex:none}
 .hdr{position:fixed;top:0;left:0;right:0;z-index:50;height:66px;background:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,0));transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
-.hdr.solid{background:rgba(11,11,11,.96);border-color:var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.hdr.solid{background:rgba(11,11,11,.96);border-color:var(--line);backdrop-filter:blur(10px)}
 .hdr .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .logo{display:flex;align-items:center;gap:12px;direction:ltr}
 .logo b{font-family:var(--disp);font-weight:400;font-size:32px;letter-spacing:4px;color:var(--red);line-height:1}
 .logo span{font-size:13px;font-weight:700;color:var(--text);border-left:1px solid #555;padding-left:12px;direction:rtl;line-height:1.1}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border-radius:6px;font-weight:800;transition:transform .12s,background .15s,filter .15s}
-.btn:active{transform:scale(.97)}
-.btn-join{background:var(--red);color:#fff;padding:8px 18px;font-size:14px}
-.btn-join:hover{background:var(--red2)}
-.btn-play{background:var(--red);color:#fff;padding:0 28px;height:50px;font-size:17px}
-.btn-play:hover{background:var(--red2)}
-.btn-white{background:#fff;color:#000;padding:0 28px;height:48px;font-size:16px}
-.btn-white:hover{background:#e6e6e6}
-.btn-grey{background:rgba(120,120,120,.45);color:#fff;padding:0 26px;height:48px;font-size:16px;backdrop-filter:blur(4px)}
-.btn-grey:hover{background:rgba(120,120,120,.65)}
-
-/* ===== hero ===== */
-.hero{position:relative;min-height:74vh;min-height:max(74svh,460px);display:flex;align-items:flex-end;overflow:hidden;background:#111}
-.hero .bg{position:absolute;inset:0;background-size:cover;background-position:center 18%;background-repeat:no-repeat;transform:scale(1.04)}
-.hero .bg.empty{background-image:radial-gradient(ellipse at 70% 20%,#3a0a0e 0,transparent 60%),radial-gradient(ellipse at 20% 80%,#1d1d1d 0,transparent 60%)}
-.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 2%,rgba(11,11,11,.55) 38%,rgba(11,11,11,.15) 70%),linear-gradient(to left,rgba(11,11,11,.7) 0,rgba(11,11,11,0) 70%)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border-radius:6px;font-weight:800;transition:transform .12s,background .15s}
+.btn:active{transform:scale(.97)}.btn-join{background:var(--red);color:#fff;padding:8px 18px;font-size:14px}.btn-play{background:var(--red);color:#fff;padding:0 28px;height:50px;font-size:17px}.btn-grey{background:rgba(120,120,120,.45);color:#fff;padding:0 26px;height:48px;font-size:16px}
+.hero{position:relative;min-height:74vh;display:flex;align-items:flex-end;overflow:hidden;background:#111}
+.hero .bg{position:absolute;inset:0;background-size:cover;background-position:center 18%;transform:scale(1.04)}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 2%,rgba(11,11,11,.55) 38%,rgba(11,11,11,.15) 70%)}
 .hero .in{position:relative;z-index:2;width:100%;padding-block:110px 52px}
-.kicker{display:flex;align-items:center;gap:10px;font-weight:800;font-size:13px;letter-spacing:.4px;color:#e8e8e8;margin-bottom:10px}
+.kicker{display:flex;align-items:center;gap:10px;font-weight:800;font-size:13px;color:#e8e8e8;margin-bottom:10px}
 .kicker:before{content:"";width:4px;height:18px;background:var(--red);border-radius:2px}
-.hero h1{font-family:var(--disp);font-weight:400;font-size:56px;line-height:.98;letter-spacing:1.5px;text-transform:uppercase;text-align:right;text-shadow:0 4px 24px rgba(0,0,0,.7);margin-bottom:14px;max-width:760px}
+.hero h1{font-family:var(--disp);font-weight:400;font-size:56px;line-height:.98;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;max-width:760px}
 .line{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;font-size:15px;font-weight:700;color:#d8d8d8;margin-bottom:14px}
-.line .dot{width:4px;height:4px;border-radius:50%;background:#777}
-.line .ok{color:#46d369}
 .badge{border:1px solid #777;border-radius:4px;padding:0 8px;font-size:12px;font-weight:700;color:#ddd}
-.hero p{max-width:560px;color:#dcdcdc;font-size:16px;margin-bottom:22px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 2px 10px rgba(0,0,0,.8)}
+.hero p{max-width:560px;color:#dcdcdc;font-size:16px;margin-bottom:22px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .acts{display:flex;flex-wrap:wrap;gap:12px}
-
-/* ===== toolbar ===== */
-.tools{padding-block:26px 4px;position:relative;z-index:3}
-.search{position:relative;max-width:620px}
-.search input{width:100%;background:#161616;border:1px solid #333;border-radius:6px;padding:13px 46px 13px 16px;font-size:16px;outline:0;transition:border-color .15s}
-.search input:focus{border-color:#777}
+.tools{padding-block:26px 4px}.search{position:relative;max-width:620px}
+.search input{width:100%;background:#161616;border:1px solid #333;border-radius:6px;padding:13px 46px 13px 16px;font-size:16px;outline:0}
 .search svg{position:absolute;right:15px;top:50%;transform:translateY(-50%);width:19px;height:19px;stroke:var(--muted);fill:none;stroke-width:2}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:14px 0 2px;scrollbar-width:none}
-.chips::-webkit-scrollbar{display:none}
-.chips button{flex:none;background:#161616;border:1px solid #333;color:#cfcfcf;padding:6px 18px;border-radius:4px;font-size:14px;font-weight:500;transition:border-color .15s,background .15s}
-.chips button:hover{border-color:#777}
+.chips button{flex:none;background:#161616;border:1px solid #333;color:#cfcfcf;padding:6px 18px;border-radius:4px;font-size:14px;font-weight:500}
 .chips button.on{background:var(--red);border-color:var(--red);color:#fff;font-weight:800}
-
-/* ===== rows ===== */
-.row{margin-top:26px;position:relative}
-.row h2,.sec h2{font-size:21px;font-weight:800;letter-spacing:.2px}
-.row h2{margin-bottom:12px}
-.rail{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x proximity;padding:8px 4% 14px;scrollbar-width:none;scroll-padding-inline:4%}
-.rail::-webkit-scrollbar{display:none}
-.rail .card{flex:0 0 136px;scroll-snap-align:start}
-.arrow{display:none;position:absolute;top:40px;bottom:14px;width:4%;min-width:44px;z-index:5;background:rgba(0,0,0,.6);color:#fff;font-size:28px;opacity:0;transition:opacity .2s}
-.arrow.r{right:0}.arrow.l{left:0}
-.row:hover .arrow{opacity:1}
-.sec{display:flex;align-items:baseline;justify-content:space-between;margin:30px 0 14px}
-.sec span{color:var(--muted);font-size:14px}
-
-/* ===== cards ===== */
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px 12px}
 .card{display:block;text-align:right;width:100%;color:inherit}
-.poster{position:relative;aspect-ratio:2/3;border-radius:6px;overflow:hidden;background:#151515;transition:transform .25s ease,box-shadow .25s ease}
+.poster{position:relative;aspect-ratio:2/3;border-radius:6px;overflow:hidden;background:#151515}
 .poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.poster .fb{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:14px 12px;direction:ltr;text-align:left;border:1px solid rgba(255,255,255,.07);border-radius:6px}
-.poster .fb b{font-family:var(--disp);font-weight:400;font-size:24px;line-height:.95;letter-spacing:1px;text-transform:uppercase;text-shadow:0 2px 10px rgba(0,0,0,.6)}
-.poster .fb small{font-size:12px;letter-spacing:2px;color:#d0b57d;margin-top:6px;font-weight:700}
-.poster .fb:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 0,rgba(255,255,255,.1),transparent 60%)}
-.poster .ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(to top,rgba(0,0,0,.75),rgba(0,0,0,.05) 60%);opacity:0;transition:opacity .2s}
-.poster .ov i{width:48px;height:48px;border-radius:50%;border:2px solid #fff;background:rgba(0,0,0,.35);display:grid;place-items:center}
-.poster .ov i:after{content:"";border-style:solid;border-width:8px 0 8px 13px;border-color:transparent transparent transparent #fff;transform:scaleX(-1);margin-right:-3px}
-@media (hover:hover){
-  .card:hover .poster{transform:scale(1.06);box-shadow:0 14px 34px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.12);z-index:4}
-  .card:hover .ov{opacity:1}
-  .arrow{display:block}
-}
-.card h3{font-size:14.5px;font-weight:700;margin-top:9px;line-height:1.3;text-align:right;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.poster .fb{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:14px 12px;direction:ltr;text-align:left}
+.poster .fb b{font-family:var(--disp);font-weight:400;font-size:24px;line-height:.95;text-transform:uppercase}
+.card h3{font-size:14.5px;font-weight:700;margin-top:9px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 .card .yr{color:var(--muted);font-size:12.5px;margin-top:1px}
 .card p{color:#8f8f8f;font-size:13px;margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .more{display:block;margin:30px auto 10px;background:#1c1c1c;border:1px solid #333;padding:12px 34px;border-radius:6px;font-weight:700}
-.more:hover{border-color:#777}
 .empty-msg{text-align:center;color:var(--muted);padding:70px 0}
-
-/* ===== film page ===== */
-.fpage{position:relative;overflow:hidden}
-.fbg{position:absolute;top:0;left:0;right:0;height:78vh;background-size:cover;background-position:center 20%;filter:blur(26px) saturate(1.1);transform:scale(1.25);opacity:.42}
-.fbg:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--bg),transparent 70%)}
-.fpage .wrap{position:relative}
-.film{padding-block:92px 10px}
-.back{display:inline-flex;align-items:center;gap:6px;color:#cfcfcf;padding:6px 0;font-size:15px;font-weight:700}
-.back:hover{color:#fff}
-.fgrid{display:grid;grid-template-columns:1fr;gap:26px;margin-top:12px}
-.fposter{width:62%;max-width:290px;margin:auto}
-.fposter .poster{box-shadow:0 22px 60px rgba(0,0,0,.75)}
-.finfo h1{font-family:var(--disp);font-weight:400;font-size:46px;line-height:1;letter-spacing:1.5px;text-transform:uppercase;text-align:right;margin-bottom:12px}
-.finfo h4{font-size:14px;color:var(--muted);font-weight:700;margin:20px 0 6px;letter-spacing:.3px}
-.story{color:#e1e1e1;font-size:17px;line-height:1.95}
-.gen{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.gen span{border:1px solid #444;border-radius:4px;padding:2px 12px;font-size:13px;color:#d6d6d6}
-.note{margin-top:18px;font-size:14px;color:#bdbdbd;border-right:3px solid var(--red);padding:4px 12px;background:rgba(255,255,255,.03)}
-.cta{display:grid;gap:10px;margin-top:24px}
-.cta small{text-align:center;color:var(--muted);font-size:13px}
-.cta .btn-grey{background:rgba(255,255,255,.08);border:1px solid #444}
-.cta .btn-grey:hover{background:rgba(255,255,255,.14)}
-
-footer{margin-top:56px;border-top:1px solid var(--line);padding:28px 0 44px;text-align:center;color:var(--muted);font-size:14px}
+.fpage{position:relative;overflow:hidden}.fbg{position:absolute;top:0;left:0;right:0;height:78vh;background-size:cover;filter:blur(26px);transform:scale(1.25);opacity:.42}
+.film{padding-block:92px 10px}.back{display:inline-flex;align-items:center;gap:6px;color:#cfcfcf;padding:6px 0;font-size:15px;font-weight:700}
+.fgrid{display:grid;grid-template-columns:1fr;gap:26px;margin-top:12px}.fposter{width:62%;max-width:290px;margin:auto}
+.finfo h1{font-family:var(--disp);font-weight:400;font-size:46px;line-height:1;text-transform:uppercase;margin-bottom:12px}
+.story{color:#e1e1e1;font-size:17px;line-height:1.95}.gen{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.gen span{border:1px solid #444;border-radius:4px;padding:2px 12px;font-size:13px}
+.cta{display:grid;gap:10px;margin-top:24px}footer{margin-top:56px;border-top:1px solid var(--line);padding:28px 0 44px;text-align:center;color:var(--muted);font-size:14px}
 footer a{color:#fff;font-weight:800;border-bottom:2px solid var(--red)}
-.demo{position:fixed;bottom:0;left:0;right:0;z-index:60;background:#2a210c;color:#f1d28a;text-align:center;font-size:13px;padding:7px 12px;border-top:1px solid #4a3a14}
-.skeleton{height:60vh;display:grid;place-items:center;color:var(--muted)}
-
-@media (min-width:640px){
-  .grid{grid-template-columns:repeat(3,1fr);gap:24px 16px}
-  .rail .card{flex-basis:168px}
-  .hero h1{font-size:76px}
-}
-@media (min-width:900px){
-  .grid{grid-template-columns:repeat(5,1fr)}
-  .rail .card{flex-basis:196px}
-  .rail{gap:12px}
-  .hero{min-height:82vh}
-  .hero h1{font-size:92px}
-  .hero p{font-size:18px}
-  .fgrid{grid-template-columns:320px 1fr;gap:48px}
-  .fposter{width:100%;max-width:none;margin:0}
-  .finfo h1{font-size:68px}
-  .cta{grid-template-columns:auto auto 1fr;align-items:center}
-  .cta small{text-align:right}
-}
+@media(min-width:640px){.grid{grid-template-columns:repeat(3,1fr)}}@media(min-width:900px){.grid{grid-template-columns:repeat(5,1fr)}.fgrid{grid-template-columns:320px 1fr;gap:48px}.fposter{width:100%;max-width:none;margin:0}}
 </style>
 </head>
 <body>
-
-<div class="demo" id="demo" hidden>نسخة تجريبية بأفلام عيّنة. اربط جدول Google Sheets ليعرض أفلامك.</div>
-
-<header class="hdr" id="hdr">
-  <div class="wrap">
-    <a class="logo" href="./" id="home" aria-label="الصفحة الرئيسية"><b>CINEMA</b><span>أفلام<br>مترجمة</span></a>
-    <a class="btn btn-join" id="joinTop" target="_blank" rel="noopener"><svg class="tgi" viewBox="0 0 24 24"><path d="M9.8 15.6 9.6 19c.4 0 .6-.2.8-.4l2-1.9 4.1 3c.8.4 1.3.2 1.5-.7l2.7-12.9c.3-1.2-.4-1.7-1.2-1.4L3.8 10.1c-1.1.4-1.1 1.1-.2 1.4l4.3 1.3 9.9-6.2c.5-.3.9-.1.5.2z"/></svg>انضم للقناة</a>
-  </div>
-</header>
-
+<header class="hdr" id="hdr"><div class="wrap"><a class="logo" href="./"><b>CINEMA</b><span>أفلام<br>مترجمة</span></a><a class="btn btn-join" id="joinTop" target="_blank"><svg class="tgi" viewBox="0 0 24 24"><path d="M9.8 15.6 9.6 19c.4 0 .6-.2.8-.4l2-1.9 4.1 3c.8.4 1.3.2 1.5-.7l2.7-12.9c.3-1.2-.4-1.7-1.2-1.4L3.8 10.1c-1.1.4-1.1 1.1-.2 1.4l4.3 1.3 9.9-6.2c.5-.3.9-.1.5.2z"/></svg>انضم للقناة</a></div></header>
 <main id="app"></main>
-
-<footer>
-  <div class="wrap">
-    <p>تابع كل الأفلام الجديدة أول بأول على <a id="joinFoot" target="_blank" rel="noopener">قناتنا على تيليجرام</a></p>
-    <p style="margin-top:8px" id="copy"></p>
-  </div>
-</footer>
-
+<footer><div class="wrap"><p>تابع كل الأفلام الجديدة على <a id="joinFoot" target="_blank">قناتنا على تيليجرام</a></p><p style="margin-top:8px" id="copy"></p></div></footer>
 <script>
-/* =========================================================
-   الإعدادات: عدّل هون بس
-   ========================================================= */
-const CONFIG = {
-  channel: "moviesTranslator",   // اسم قناتك على تيليجرام بدون @
-  sheetCsvUrl: "https://docs.google.com/spreadsheets/d/1HYW073V-61WtpWmQJIj5yrFyNQzVlNddmRpzOZW2FcU/gviz/tq?tqx=out:csv",
-  pageSize: 20
-};
-
-const SAMPLE = [
-  {title:"Nosferatu",year:"1922",duration:"94",genre:"رعب, كلاسيكي",story:"يسافر موظف عقارات إلى قلعة غامضة في ترانسيلفانيا ليبيع منزلًا للكونت أورلوك، فيكتشف أنه مصاص دماء يطارد زوجته ويجلب الطاعون إلى المدينة.",link:"https://t.me/cinema_mtrjm/1",featured:"نعم"},
-  {title:"Night of the Living Dead",year:"1968",duration:"96",genre:"رعب",story:"مجموعة غرباء تحتمي داخل منزل ريفي بينما تحاصرهم جثث عائدة من الموت، وتتصاعد الخلافات بينهم أكثر من الخطر الخارجي.",link:"https://t.me/cinema_mtrjm/2"},
-  {title:"Metropolis",year:"1927",duration:"153",genre:"خيال علمي, كلاسيكي",story:"في مدينة مستقبلية منقسمة بين نخبة تعيش فوق الأرض وعمال يكدحون تحتها، يقع ابن حاكم المدينة في حب فتاة من العمال ويكتشف حجم الظلم.",link:"https://t.me/cinema_mtrjm/3"},
-  {title:"The General",year:"1926",duration:"78",genre:"كوميديا, كلاسيكي",story:"سائق قطار في الحرب الأهلية الأمريكية يطارد قطارًا سُرق منه ومعه حبيبته، في مغامرة صامتة مليئة بالمشاهد الخطرة.",link:"https://t.me/cinema_mtrjm/4"},
-  {title:"Charade",year:"1963",duration:"113",genre:"غموض, كوميديا",story:"أرملة شابة في باريس يطاردها رجال يريدون مبلغًا مخفيًا تركه زوجها الراحل، وتجد في غريب جذاب حليفًا لا تعرف إن كان يمكن الوثوق به.",link:"https://t.me/cinema_mtrjm/5"},
-  {title:"His Girl Friday",year:"1940",duration:"92",genre:"كوميديا, كلاسيكي",story:"محرر صحفي يحاول استعادة زوجته السابقة ومراسلته اللامعة قبل أن تتزوج رجلًا آخر، عبر توريطها في قضية كبرى.",link:"https://t.me/cinema_mtrjm/6"},
-  {title:"Carnival of Souls",year:"1962",duration:"78",genre:"رعب, غموض",story:"امرأة تنجو من حادث سيارة مروّع، ثم تلاحقها رؤى رجل شاحب وبناية مهجورة غامضة.",link:"https://t.me/cinema_mtrjm/7"},
-  {title:"The Cabinet of Dr. Caligari",year:"1920",duration:"76",genre:"رعب, كلاسيكي",story:"منوّم مغناطيسي يعرض في معرض متجول نائمًا يتنبأ بالمستقبل، وتتزامن مع ظهورهما جرائم قتل غامضة في البلدة.",link:"https://t.me/cinema_mtrjm/8"}
-];
-
-const $app = document.getElementById("app");
-const $hdr = document.getElementById("hdr");
+const CONFIG = { channel: "moviesTranslator", sheetCsvUrl: "https://docs.google.com/spreadsheets/d/1HYW073V-61WtpWmQJIj5yrFyNQzVlNddmRpzOZW2FcU/gviz/tq?tqx=out:csv", pageSize: 20 };
+const $app = document.getElementById("app"); const $hdr = document.getElementById("hdr");
 const joinUrl = "https://t.me/" + CONFIG.channel;
-const TG = '<svg class="tgi" viewBox="0 0 24 24"><path d="M9.8 15.6 9.6 19c.4 0 .6-.2.8-.4l2-1.9 4.1 3c.8.4 1.3.2 1.5-.7l2.7-12.9c.3-1.2-.4-1.7-1.2-1.4L3.8 10.1c-1.1.4-1.1 1.1-.2 1.4l4.3 1.3 9.9-6.2c.5-.3.9-.1.5.2z"/></svg>';
-
-let films = [];
-const state = { q: "", genre: "", shown: CONFIG.pageSize };
-
-document.getElementById("joinTop").href = joinUrl;
-document.getElementById("joinFoot").href = joinUrl;
-document.getElementById("copy").textContent = "© " + new Date().getFullYear() + " Cinema | أفلام مترجمة";
-
-function el(tag, props, ...kids) {
-  const e = document.createElement(tag);
-  if (props) for (const k in props) {
-    if (k === "class") e.className = props[k];
-    else if (k === "html") e.innerHTML = props[k];
-    else if (k.startsWith("on")) e.addEventListener(k.slice(2), props[k]);
-    else e.setAttribute(k, props[k]);
-  }
-  kids.flat().forEach(c => { if (c != null && c !== false) e.append(c.nodeType ? c : document.createTextNode(c)); });
-  return e;
-}
-
-function parseCSV(text) {
-  const rows = []; let row = [], cur = "", q = false;
-  text = text.replace(/^﻿/, "");
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (q) {
-      if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; }
-      else cur += c;
-    } else if (c === '"') q = true;
-    else if (c === ",") { row.push(cur); cur = ""; }
-    else if (c === "\n" || c === "\r") {
-      if (c === "\r" && text[i + 1] === "\n") i++;
-      row.push(cur); cur = ""; rows.push(row); row = [];
-    } else cur += c;
-  }
-  if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
-  return rows.filter(r => r.some(x => x.trim() !== ""));
-}
-
-function fixImageUrl(u) {
-  u = (u || "").trim();
-  const m = u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]+)/);
-  return m ? "https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w600" : u;
-}
-
-function normalize(list) {
-  return list.map((r, i) => {
-    const link = (r.link || "").trim();
-    const m = link.match(/\/(\d+)\/?(?:\?.*)?$/);
-    return {
-      id: m ? m[1] : "r" + (i + 1),
-      title: (r.title || "").trim().replace(/\s*\((?:19|20)\d{2}\)\s*$/, ""),
-      year: (r.year || "").trim(),
-      duration: parseInt(r.duration, 10) || 0,
-      genres: (r.genre || "").split(/[,،]/).map(s => s.trim()).filter(Boolean),
-      story: (r.story || "").trim(),
-      link: link || joinUrl,
-      poster: fixImageUrl(r.poster),
-      featured: /^(نعم|yes|true|1|✓)$/i.test((r.featured || "").trim()),
-      order: i
-    };
-  }).filter(f => f.title);
-}
-
-function sheetUrls(u) {
-  const m = u.match(/\/spreadsheets\/d\/([\w-]+)/);
-  if (m && !/\/d\/e\//.test(u) && !/output=csv/.test(u)) {
-    const base = "https://docs.google.com/spreadsheets/d/" + m[1];
-    return [base + "/gviz/tq?tqx=out:csv", base + "/export?format=csv&gid=0"];
-  }
-  return [u];
-}
-
-async function loadFilms() {
-  if (!CONFIG.sheetCsvUrl) {
-    document.getElementById("demo").hidden = false;
-    return normalize(SAMPLE);
-  }
-  let lastErr;
-  for (const url of sheetUrls(CONFIG.sheetCsvUrl)) {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("sheet " + res.status);
-      const rows = parseCSV(await res.text());
-      const head = rows.shift().map(h => h.trim().toLowerCase());
-      return normalize(rows.map(r => Object.fromEntries(head.map((h, i) => [h, r[i] || ""]))));
-    } catch (e) { lastErr = e; }
-  }
-  throw lastErr;
-}
-
-function fmtDuration(min) {
-  if (!min) return "";
-  const h = Math.floor(min / 60), m = min % 60;
-  return ((h ? h + " س " : "") + (m ? m + " د" : "")).trim();
-}
+let films = []; const state = { q: "", genre: "", shown: CONFIG.pageSize };
+document.getElementById("joinTop").href = joinUrl; document.getElementById("joinFoot").href = joinUrl;
+document.getElementById("copy").textContent = "© " + new Date().getFullYear() + " Cinema";
+function el(tag, props, ...kids) { const e = document.createElement(tag); if (props) for (const k in props) { if (k === "class") e.className = props[k]; else if (k === "html") e.innerHTML = props[k]; else if (k.startsWith("on")) e.addEventListener(k.slice(2), props[k]); else e.setAttribute(k, props[k]); } kids.flat().forEach(c => { if (c != null && c !== false) e.append(c.nodeType ? c : document.createTextNode(c)); }); return e; }
+function parseCSV(text) { const rows = []; let row = [], cur = "", q = false; text = text.replace(/^﻿/, ""); for (let i = 0; i < text.length; i++) { const c = text[i]; if (q) { if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += c; } else if (c === '"') q = true; else if (c === ",") { row.push(cur); cur = ""; } else if (c === "\n" || c === "\r") { if (c === "\r" && text[i + 1] === "\n") i++; row.push(cur); cur = ""; rows.push(row); row = []; } else cur += c; } if (cur !== "" || row.length) { row.push(cur); rows.push(row); } return rows.filter(r => r.some(x => x.trim() !== "")); }
+function fixImageUrl(u) { u = (u || "").trim(); const m = u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]+)/); return m ? "https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w600" : u; }
+function normalize(list) { return list.map((r, i) => { const link = (r.link || "").trim(); const m = link.match(/\/(\d+)\/?(?:\?.*)?$/); return { id: m ? m[1] : "r" + (i + 1), title: (r.title || "").trim().replace(/\s*\((?:19|20)\d{2}\)\s*$/, ""), year: (r.year || "").trim(), duration: parseInt(r.duration, 10) || 0, genres: (r.genre || "").split(/[,،]/).map(s => s.trim()).filter(Boolean), story: (r.story || "").trim(), link: link || joinUrl, poster: fixImageUrl(r.poster), order: i }; }).filter(f => f.title); }
+async function loadFilms() { let lastErr; const urls = ["https://docs.google.com/spreadsheets/d/1HYW073V-61WtpWmQJIj5yrFyNQzVlNddmRpzOZW2FcU/gviz/tq?tqx=out:csv", "https://docs.google.com/spreadsheets/d/1HYW073V-61WtpWmQJIj5yrFyNQzVlNddmRpzOZW2FcU/export?format=csv&gid=0"]; for (const url of urls) { try { const res = await fetch(url); if (!res.ok) throw new Error(); const rows = parseCSV(await res.text()); const head = rows.shift().map(h => h.trim().toLowerCase()); return normalize(rows.map(r => Object.fromEntries(head.map((h, i) => [h, r[i] || ""])))); } catch (e) { lastErr = e; } } throw lastErr; }
+function fmtDuration(min) { if (!min) return ""; const h = Math.floor(min / 60), m = min % 60; return ((h ? h + " س " : "") + (m ? m + " د" : "")).trim(); }
 function shortStory(s, n = 100) { return s.length > n ? s.slice(0, n).trim() + "…" : s; }
 function hue(str) { let h = 0; for (const c of str) h = (h * 31 + c.charCodeAt(0)) % 360; return h; }
-function posterSources(f) { return [f.poster, "posters/" + f.id + ".jpg"].filter(Boolean); }
-
-function poster(f, overlay) {
-  const h = hue(f.title);
-  const fb = el("div", { class: "fb", style: `background:linear-gradient(165deg,hsl(${h} 38% 17%),hsl(${(h + 30) % 360} 30% 6%))` },
-    el("b", null, f.title), el("small", null, f.year));
-  const wrap = el("div", { class: "poster" }, fb);
-  const srcs = posterSources(f);
-  (function tryNext(i) {
-    if (i >= srcs.length) return;
-    const img = document.createElement("img");
-    img.alt = f.title; img.loading = "lazy"; img.decoding = "async"; img.referrerPolicy = "no-referrer";
-    img.style.opacity = "0"; img.style.transition = "opacity .35s";
-    img.onload = () => { img.style.opacity = "1"; fb.remove(); };
-    img.onerror = () => { img.remove(); tryNext(i + 1); };
-    wrap.prepend(img);
-    img.src = srcs[i];
-  })(0);
-  if (overlay) wrap.append(el("div", { class: "ov" }, el("i")));
-  return wrap;
-}
-
-function card(f, withStory) {
-  return el("a", { class: "card", href: "?f=" + encodeURIComponent(f.id) },
-    poster(f, true),
-    el("h3", null, f.title),
-    el("div", { class: "yr" }, [f.year, fmtDuration(f.duration)].filter(Boolean).join(" • ")),
-    withStory && f.story ? el("p", null, shortStory(f.story)) : null
-  );
-}
-
-function matches(f) {
-  if (state.genre && !f.genres.includes(state.genre)) return false;
-  if (!state.q) return true;
-  const q = state.q.toLowerCase();
-  return (f.title + " " + f.story + " " + f.genres.join(" ")).toLowerCase().includes(q);
-}
-
-function renderHome() {
- 
+function poster(f) { const h = hue(f.title); const fb = el("div", { class: "fb", style: `background:linear-gradient(165deg,hsl(${h} 38% 17%),hsl(${(h + 30) % 360} 30% 6%))` }, el("b", null, f.title), el("small", null, f.year)); const wrap = el("div", { class: "poster" }, fb); if (f.poster) { const img = document.createElement("img"); img.alt = f.title; img.onload = () => { img.style.opacity = "1"; fb.remove(); }; img.style.opacity = "0"; img.style.transition = "opacity .35s"; wrap.prepend(img); img.src = f.poster; } return wrap; }
+function card(f, withStory) { return el("a", { class: "card", href: "?f=" + encodeURIComponent(f.id) }, poster(f), el("h3", null, f.title), el("div", { class: "yr" }, [f.year, fmtDuration(f.duration)].filter(Boolean).join(" • ")), withStory && f.story ? el("p", null, shortStory(f.story)) : null); }
+function matches(f) { if (state.genre && !f.genres.includes(state.genre)) return false; if (!state.q) return true; const q = state.q.toLowerCase(); return (f.title + " " + f.story + " " + f.genres.join(" ")).toLowerCase().includes(q); }
+function renderHome() { $app.innerHTML = ""; const isSearching = state.q || state.genre; let featured = null; if (films.length > 0) { const fiveHours = 5 * 60 * 60 * 1000; const slot = Math.floor(Date.now() / fiveHours); featured = films[slot % films.length]; }
+  if (!isSearching && featured) { $app.append(el("section", { class: "hero" }, el("div", { class: "bg", style: featured.poster ? `background-image:url('${featured.poster}')` : "" }), el("div", { class: "in wrap" }, el("div", { class: "kicker" }, "فيلم مقترح"), el("h1", null, featured.title), el("div", { class: "line" }, el("span", null, featured.year), el("span", null, fmtDuration(featured.duration)), el("span", { class: "badge" }, "ترجمة عربية")), el("p", null, shortStory(featured.story, 160)), el("div", { class: "acts" }, el("a", { class: "btn btn-play", href: featured.link, target: "_blank" }, "شاهد على تيليجرام"), el("a", { class: "btn btn-grey", href: "?f=" + encodeURIComponent(featured.id) }, "التفاصيل"))))); }
+  const allGenres = Array.from(new Set(films.flatMap(f => f.genres))).filter(Boolean); const tools = el("div", { class: "tools wrap" }); const searchWrap = el("div", { class: "search" }); const input = el("input", { type: "search", placeholder: "ابحث عن فيلم...", value: state.q }); input.addEventListener("input", e => { state.q = e.target.value.trim(); state.shown = CONFIG.pageSize; renderHome(); }); searchWrap.append(input, el("span", { html: '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>' })); tools.append(searchWrap); const chips = el("div", { class: "chips" }); const allBtn = el("button", { class: state.genre === "" ? "on" : "" }, "الكل"); allBtn.onclick = () => { state.genre = ""; state.shown = CONFIG.pageSize; renderHome(); }; chips.append(allBtn); allGenres.forEach(g => { const b = el("button", { class: state.genre === g ? "on" : "" }, g); b.onclick = () => { state.genre = g; state.shown = CONFIG.pageSize; renderHome(); }; chips.append(b); }); tools.append(chips); $app.append(tools);
+  const filtered = films.filter(matches); const shown = filtered.slice(0, state.shown); const sec = el("div", { class: "sec wrap" }); sec.append(el("h2", null, isSearching ? "نتائج البحث" : "كل الأفلام"), el("span", null, filtered.length + " فيلم")); $app.append(sec); if (filtered.length === 0) { $app.append(el("div", { class: "empty-msg wrap" }, "لا توجد نتائج مطابقة.")); } else { const grid = el("div", { class: "grid wrap" }); shown.forEach(f => grid.append(card(f, true))); $app.append(grid); if (filtered.length > state.shown) { const more = el("button", { class: "more" }, "عرض المزيد"); more.onclick = () => { state.shown += CONFIG.pageSize; renderHome(); }; $app.append(more); } } }
+function renderFilm(id) { $app.innerHTML = ""; const f = films.find(x => x.id === id); if (!f) { $app.append(el("div", { class: "empty-msg wrap" }, "الفيلم غير موجود. ", el("a", { href: "./" }, "رجوع للرئيسية"))); return; } $app.append(el("div", { class: "fpage" }, el("div", { class: "fbg", style: f.poster ? `background-image:url('${f.poster}')` : "" }), el("div", { class: "wrap film" }, el("a", { class: "back", href: "./" }, "← رجوع"), el("div", { class: "fgrid" }, el("div", { class: "fposter" }, poster(f)), el("div", { class: "finfo" }, el("h1", null, f.title), el("div", { class: "line" }, el("span", null, f.year), el("span", null, fmtDuration(f.duration)), el("span", { class: "badge" }, "ترجمة عربية")), el("h4", null, "القصة"), el("p", { class: "story" }, f.story || "لا يوجد وصف."), el("div", { class: "gen" }, f.genres.map(g => el("span", null, g))), el("div", { class: "cta" }, el("a", { class: "btn btn-play", href: f.link, target: "_blank" }, "شاهد على تيليجرام"))))))); }
+async function start() { $app.innerHTML = '<div class="skeleton">جاري التحميل...</div>'; try { films = await loadFilms(); } catch (e) { console.error(e); $app.innerHTML = '<div class="empty-msg">حدث خطأ في تحميل البيانات. تأكد من مشاركة جدول Google Sheets.</div>'; return; } const hash = location.search; if (hash.startsWith("?f=")) { renderFilm(decodeURIComponent(hash.slice(3))); } else { renderHome(); } }
+window.addEventListener("scroll", () => { $hdr.classList.toggle("solid", window.scrollY > 20); });
+window.addEventListener("popstate", start);
+start();
+</script>
+</body>
+</html>
