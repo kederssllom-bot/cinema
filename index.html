@@ -186,6 +186,8 @@ footer a{color:#fff;font-weight:800;border-bottom:2px solid var(--red)}
 const CONFIG = {
   channel: "moviesTranslator",   // اسم قناتك على تيليجرام بدون @
 
+  // رابط جدول Google Sheets (اتركه فاضي لعرض النسخة التجريبية).
+  // أفضل رابط: ملف ← مشاركة ← نشر على الويب ← اختار CSV ← انسخ الرابط.
   sheetCsvUrl: "https://docs.google.com/spreadsheets/d/1HYW073V-61WtpWmQJIj5yrFyNQzVlNddmRpzOZW2FcU/gviz/tq?tqx=out:csv",
 
   pageSize: 20               // عدد الأفلام بكل دفعة بقسم "كل الأفلام"
@@ -261,7 +263,7 @@ function normalize(list) {
     const m = link.match(/\/(\d+)\/?(?:\?.*)?$/);
     return {
       id: m ? m[1] : "r" + (i + 1),
-      title: (r.title || "").trim().replace(/\s*\((?:19\vert{}20)\d{2}\)\s*$/, ""),
+      title: (r.title || "").trim().replace(/\s*\((?:19|20)\d{2}\)\s*$/, ""),
       year: (r.year || "").trim(),
       duration: parseInt(r.duration, 10) || 0,
       genres: (r.genre || "").split(/[,،]/).map(s => s.trim()).filter(Boolean),
@@ -275,6 +277,7 @@ function normalize(list) {
 }
 
 function sheetUrls(u) {
+  // رابط تحرير عادي → روابط تصدير CSV (الجدول لازم يكون مشارك "أي شخص معه الرابط")
   const m = u.match(/\/spreadsheets\/d\/([\w-]+)/);
   if (m && !/\/d\/e\//.test(u) && !/output=csv/.test(u)) {
     const base = "https://docs.google.com/spreadsheets/d/" + m[1];
@@ -331,8 +334,4 @@ function poster(f, overlay) {
 }
 
 function card(f, withStory) {
-  return el("a", { class: "card", href: "f/" + encodeURIComponent(f.id) + "/", onclick: nav(f.id) },
-    poster(f, true),
-    el("h3", { dir: "auto" }, f.title),
-    el("div", { class: "yr" }, [f.year, fmtDuration(f.duration)].filter(Boolean).join(" · ")),
-    withStory ? el("p", null, sh
+  return el("a", { class: "card", href: "f/" + encodeURIComponent(f.id) + 
