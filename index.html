@@ -1,337 +1,623 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Cinema | أفلام مترجمة</title>
-<meta name="description" content="أفلام مستقلة وأفلام مشاع عام بترجمة عربية. شاهدها على قناتنا في تيليجرام.">
-<meta property="og:title" content="Cinema | أفلام مترجمة">
-<meta property="og:description" content="أفلام مستقلة وأفلام مشاع عام بترجمة عربية.">
-<meta property="og:type" content="website">
-<meta name="theme-color" content="#0b0b0b">
+<meta name="theme-color" content="#050505">
+<title>شاهد الآن | WatchNow</title>
+<meta name="description" content="شاهد الآن | WatchNow - أرشيف أفلام وفيديوهات من الملكية العامة">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Cairo', 'system-ui', 'sans-serif'] },
+        colors: { brand: { DEFAULT: '#a8161d', dark: '#85111a' } }
+      }
+    }
+  };
+</script>
 <style>
-:root{
-  --bg:#0b0b0b; --card:#181818; --line:#262626;
-  --red:#e50914; --red2:#b20710;
-  --text:#f5f5f1; --muted:#a3a3a3;
-  --disp:'Bebas Neue','Tajawal',Impact,sans-serif;
-}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{overflow-x:hidden}
-body{font-family:'Tajawal',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-button,input{font-family:inherit;color:inherit}
-button{cursor:pointer;border:0;background:none}
-img{display:block;max-width:100%}
-.wrap{max-width:1320px;margin:auto;padding-inline:4%}
-.tgi{width:18px;height:18px;fill:currentColor;flex:none}
-
-/* ===== header ===== */
-.hdr{position:fixed;top:0;left:0;right:0;z-index:50;height:66px;background:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,0));transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
-.hdr.solid{background:rgba(11,11,11,.96);border-color:var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.hdr .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.logo{display:flex;align-items:center;gap:12px;direction:ltr}
-.logo b{font-family:var(--disp);font-weight:400;font-size:32px;letter-spacing:4px;color:var(--red);line-height:1}
-.logo span{font-size:13px;font-weight:700;color:var(--text);border-left:1px solid #555;padding-left:12px;direction:rtl;line-height:1.1}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border-radius:6px;font-weight:800;transition:transform .12s,background .15s,filter .15s}
-.btn:active{transform:scale(.97)}
-.btn-join{background:var(--red);color:#fff;padding:8px 18px;font-size:14px}
-.btn-join:hover{background:var(--red2)}
-.btn-play{background:var(--red);color:#fff;padding:0 28px;height:50px;font-size:17px}
-.btn-play:hover{background:var(--red2)}
-.btn-white{background:#fff;color:#000;padding:0 28px;height:48px;font-size:16px}
-.btn-white:hover{background:#e6e6e6}
-.btn-grey{background:rgba(120,120,120,.45);color:#fff;padding:0 26px;height:48px;font-size:16px;backdrop-filter:blur(4px)}
-.btn-grey:hover{background:rgba(120,120,120,.65)}
-
-/* ===== hero ===== */
-.hero{position:relative;min-height:74vh;min-height:max(74svh,460px);display:flex;align-items:flex-end;overflow:hidden;background:#111}
-.hero .bg{position:absolute;inset:0;background-size:cover;background-position:center 18%;background-repeat:no-repeat;transform:scale(1.04)}
-.hero .bg.empty{background-image:radial-gradient(ellipse at 70% 20%,#3a0a0e 0,transparent 60%),radial-gradient(ellipse at 20% 80%,#1d1d1d 0,transparent 60%)}
-.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 2%,rgba(11,11,11,.55) 38%,rgba(11,11,11,.15) 70%),linear-gradient(to left,rgba(11,11,11,.7) 0,rgba(11,11,11,0) 70%)}
-.hero .in{position:relative;z-index:2;width:100%;padding-block:110px 52px}
-.kicker{display:flex;align-items:center;gap:10px;font-weight:800;font-size:13px;letter-spacing:.4px;color:#e8e8e8;margin-bottom:10px}
-.kicker:before{content:"";width:4px;height:18px;background:var(--red);border-radius:2px}
-.hero h1{font-family:var(--disp);font-weight:400;font-size:56px;line-height:.98;letter-spacing:1.5px;text-transform:uppercase;text-align:right;text-shadow:0 4px 24px rgba(0,0,0,.7);margin-bottom:14px;max-width:760px}
-.line{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;font-size:15px;font-weight:700;color:#d8d8d8;margin-bottom:14px}
-.line .dot{width:4px;height:4px;border-radius:50%;background:#777}
-.line .ok{color:#46d369}
-.badge{border:1px solid #777;border-radius:4px;padding:0 8px;font-size:12px;font-weight:700;color:#ddd}
-.hero p{max-width:560px;color:#dcdcdc;font-size:16px;margin-bottom:22px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 2px 10px rgba(0,0,0,.8)}
-.acts{display:flex;flex-wrap:wrap;gap:12px}
-
-/* ===== toolbar ===== */
-.tools{padding-block:26px 4px;position:relative;z-index:3}
-.search{position:relative;max-width:620px}
-.search input{width:100%;background:#161616;border:1px solid #333;border-radius:6px;padding:13px 46px 13px 16px;font-size:16px;outline:0;transition:border-color .15s}
-.search input:focus{border-color:#777}
-.search svg{position:absolute;right:15px;top:50%;transform:translateY(-50%);width:19px;height:19px;stroke:var(--muted);fill:none;stroke-width:2}
-.chips{display:flex;gap:8px;overflow-x:auto;padding:14px 0 2px;scrollbar-width:none}
-.chips::-webkit-scrollbar{display:none}
-.chips button{flex:none;background:#161616;border:1px solid #333;color:#cfcfcf;padding:6px 18px;border-radius:4px;font-size:14px;font-weight:500;transition:border-color .15s,background .15s}
-.chips button:hover{border-color:#777}
-.chips button.on{background:var(--red);border-color:var(--red);color:#fff;font-weight:800}
-
-/* ===== rows ===== */
-.row{margin-top:26px;position:relative}
-.row h2,.sec h2{font-size:21px;font-weight:800;letter-spacing:.2px}
-.row h2{margin-bottom:12px}
-.rail{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x proximity;padding:8px 4% 14px;scrollbar-width:none;scroll-padding-inline:4%}
-.rail::-webkit-scrollbar{display:none}
-.rail .card{flex:0 0 136px;scroll-snap-align:start}
-.arrow{display:none;position:absolute;top:40px;bottom:14px;width:4%;min-width:44px;z-index:5;background:rgba(0,0,0,.6);color:#fff;font-size:28px;opacity:0;transition:opacity .2s}
-.arrow.r{right:0}.arrow.l{left:0}
-.row:hover .arrow{opacity:1}
-.sec{display:flex;align-items:baseline;justify-content:space-between;margin:30px 0 14px}
-.sec span{color:var(--muted);font-size:14px}
-
-/* ===== cards ===== */
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px 12px}
-.card{display:block;text-align:right;width:100%;color:inherit}
-.poster{position:relative;aspect-ratio:2/3;border-radius:6px;overflow:hidden;background:#151515;transition:transform .25s ease,box-shadow .25s ease}
-.poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.poster .fb{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:14px 12px;direction:ltr;text-align:left;border:1px solid rgba(255,255,255,.07);border-radius:6px}
-.poster .fb b{font-family:var(--disp);font-weight:400;font-size:24px;line-height:.95;letter-spacing:1px;text-transform:uppercase;text-shadow:0 2px 10px rgba(0,0,0,.6)}
-.poster .fb small{font-size:12px;letter-spacing:2px;color:#d0b57d;margin-top:6px;font-weight:700}
-.poster .fb:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 0,rgba(255,255,255,.1),transparent 60%)}
-.poster .ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(to top,rgba(0,0,0,.75),rgba(0,0,0,.05) 60%);opacity:0;transition:opacity .2s}
-.poster .ov i{width:48px;height:48px;border-radius:50%;border:2px solid #fff;background:rgba(0,0,0,.35);display:grid;place-items:center}
-.poster .ov i:after{content:"";border-style:solid;border-width:8px 0 8px 13px;border-color:transparent transparent transparent #fff;transform:scaleX(-1);margin-right:-3px}
-@media (hover:hover){
-  .card:hover .poster{transform:scale(1.06);box-shadow:0 14px 34px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.12);z-index:4}
-  .card:hover .ov{opacity:1}
-  .arrow{display:block}
-}
-.card h3{font-size:14.5px;font-weight:700;margin-top:9px;line-height:1.3;text-align:right;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
-.card .yr{color:var(--muted);font-size:12.5px;margin-top:1px}
-.card p{color:#8f8f8f;font-size:13px;margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.more{display:block;margin:30px auto 10px;background:#1c1c1c;border:1px solid #333;padding:12px 34px;border-radius:6px;font-weight:700}
-.more:hover{border-color:#777}
-.empty-msg{text-align:center;color:var(--muted);padding:70px 0}
-
-/* ===== film page ===== */
-.fpage{position:relative;overflow:hidden}
-.fbg{position:absolute;top:0;left:0;right:0;height:78vh;background-size:cover;background-position:center 20%;filter:blur(26px) saturate(1.1);transform:scale(1.25);opacity:.42}
-.fbg:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--bg),transparent 70%)}
-.fpage .wrap{position:relative}
-.film{padding-block:92px 10px}
-.back{display:inline-flex;align-items:center;gap:6px;color:#cfcfcf;padding:6px 0;font-size:15px;font-weight:700}
-.back:hover{color:#fff}
-.fgrid{display:grid;grid-template-columns:1fr;gap:26px;margin-top:12px}
-.fposter{width:62%;max-width:290px;margin:auto}
-.fposter .poster{box-shadow:0 22px 60px rgba(0,0,0,.75)}
-.finfo h1{font-family:var(--disp);font-weight:400;font-size:46px;line-height:1;letter-spacing:1.5px;text-transform:uppercase;text-align:right;margin-bottom:12px}
-.finfo h4{font-size:14px;color:var(--muted);font-weight:700;margin:20px 0 6px;letter-spacing:.3px}
-.story{color:#e1e1e1;font-size:17px;line-height:1.95}
-.gen{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.gen span{border:1px solid #444;border-radius:4px;padding:2px 12px;font-size:13px;color:#d6d6d6}
-.note{margin-top:18px;font-size:14px;color:#bdbdbd;border-right:3px solid var(--red);padding:4px 12px;background:rgba(255,255,255,.03)}
-.cta{display:grid;gap:10px;margin-top:24px}
-.cta small{text-align:center;color:var(--muted);font-size:13px}
-.cta .btn-grey{background:rgba(255,255,255,.08);border:1px solid #444}
-.cta .btn-grey:hover{background:rgba(255,255,255,.14)}
-
-footer{margin-top:56px;border-top:1px solid var(--line);padding:28px 0 44px;text-align:center;color:var(--muted);font-size:14px}
-footer a{color:#fff;font-weight:800;border-bottom:2px solid var(--red)}
-.demo{position:fixed;bottom:0;left:0;right:0;z-index:60;background:#2a210c;color:#f1d28a;text-align:center;font-size:13px;padding:7px 12px;border-top:1px solid #4a3a14}
-.skeleton{height:60vh;display:grid;place-items:center;color:var(--muted)}
-
-@media (min-width:640px){
-  .grid{grid-template-columns:repeat(3,1fr);gap:24px 16px}
-  .rail .card{flex-basis:168px}
-  .hero h1{font-size:76px}
-}
-@media (min-width:900px){
-  .grid{grid-template-columns:repeat(5,1fr)}
-  .rail .card{flex-basis:196px}
-  .rail{gap:12px}
-  .hero{min-height:82vh}
-  .hero h1{font-size:92px}
-  .hero p{font-size:18px}
-  .fgrid{grid-template-columns:320px 1fr;gap:48px}
-  .fposter{width:100%;max-width:none;margin:0}
-  .finfo h1{font-size:68px}
-  .cta{grid-template-columns:auto auto 1fr;align-items:center}
-  .cta small{text-align:right}
-}
+  html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+  body { background: #050505; color: #f5f5f5; font-family: 'Cairo', system-ui, sans-serif; overscroll-behavior-y: none; }
+  .glass { background: rgba(10,10,10,.55); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.08); }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .slide { opacity: 0; transition: opacity .9s ease; pointer-events: none; }
+  .slide.active { opacity: 1; pointer-events: auto; }
+  .slide .bg { transform: scale(1.08); transition: transform 7s ease-out; }
+  .slide.active .bg { transform: scale(1); }
+  .card { transition: transform .25s ease, box-shadow .25s ease; }
+  @media (hover:hover) { .card:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 12px 32px rgba(0,0,0,.55); } }
+  .card:active { transform: scale(.97); }
+  .fade-in { animation: fadeIn .5s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  .sheet { animation: sheetUp .35s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes sheetUp { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .skeleton { background: linear-gradient(110deg, #141414 30%, #1f1f1f 50%, #141414 70%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+  .clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 </style>
 </head>
-<body>
+<body class="min-h-screen antialiased">
 
-<div class="demo" id="demo" hidden>نسخة تجريبية بأفلام عيّنة. اربط جدول Google Sheets ليعرض أفلامك.</div>
-
-<header class="hdr" id="hdr">
-  <div class="wrap">
-    <a class="logo" href="./" id="home" aria-label="الصفحة الرئيسية"><b>CINEMA</b><span>أفلام<br>مترجمة</span></a>
-    <a class="btn btn-join" id="joinTop" target="_blank" rel="noopener"><svg class="tgi" viewBox="0 0 24 24"><path d="M9.8 15.6 9.6 19c.4 0 .6-.2.8-.4l2-1.9 4.1 3c.8.4 1.3.2 1.5-.7l2.7-12.9c.3-1.2-.4-1.7-1.2-1.4L3.8 10.1c-1.1.4-1.1 1.1-.2 1.4l4.3 1.3 9.9-6.2c.5-.3.9-.1.5.2z"/></svg>انضم للقناة</a>
+<!-- ============ الهيدر ============ -->
+<header id="topbar" class="fixed top-0 inset-x-0 z-40 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-4 h-16 flex items-center gap-3">
+    <a href="#" class="shrink-0 flex flex-col leading-none"><span class="text-xl font-black text-white">شاهد الآن</span><span class="text-[11px] font-semibold tracking-widest text-brand mt-1" dir="ltr">WatchNow</span></a>
+    <div class="flex-1"></div>
+    <div class="relative w-full max-w-xs">
+      <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="search" type="search" inputmode="search" autocomplete="off" placeholder="ابحث عن فيلم أو سنة..."
+        class="glass w-full rounded-full py-2 pr-10 pl-4 text-sm placeholder-white/40 focus:outline-none focus:border-white/25 focus:ring-0 transition">
+    </div>
   </div>
 </header>
 
-<main id="app"></main>
+<main>
+  <!-- ============ السلايدر المميز ============ -->
+  <section id="hero" class="relative w-full h-[72vh] min-h-[460px] max-h-[720px] overflow-hidden bg-black">
+    <div id="slides" class="absolute inset-0"></div>
+    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#050505] to-transparent pointer-events-none"></div>
+    <div id="dots" class="absolute bottom-5 inset-x-0 flex justify-center gap-2 z-10"></div>
+  </section>
 
-<footer>
-  <div class="wrap">
-    <p>تابع كل الأفلام الجديدة أول بأول على <a id="joinFoot" target="_blank" rel="noopener">قناتنا على تيليجرام</a></p>
-    <p style="margin-top:8px" id="copy"></p>
-  </div>
+  <!-- ============ الفلاتر ============ -->
+  <section class="sticky top-16 z-30 -mt-2">
+    <div class="glass">
+      <div class="max-w-7xl mx-auto px-4 py-3">
+        <div id="chips" class="flex gap-2 overflow-x-auto no-scrollbar"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ الكروت ============ -->
+  <section class="max-w-7xl mx-auto px-4 pt-6 pb-16">
+    <div id="suggest"></div>
+    <div class="flex items-end justify-between mb-4">
+      <h2 id="gridTitle" class="text-xl font-extrabold">كل الأفلام</h2>
+      <span id="count" class="text-sm text-white/50"></span>
+    </div>
+    <div id="grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4"></div>
+    <div id="empty" class="hidden text-center py-20 text-white/50">
+      <div class="text-5xl mb-3">🎞️</div>
+      <p class="font-semibold">ما لقينا نتائج مطابقة</p>
+      <p class="text-sm mt-1">جرّب كلمة ثانية أو تصنيف آخر</p>
+    </div>
+    <div id="error" class="hidden text-center py-6 text-amber-400/90 text-sm"></div>
+    <div id="sentinel" class="h-10"></div>
+  </section>
+</main>
+
+<!-- ============ الفوتر ============ -->
+<footer class="border-t border-white/10 py-8 px-4 text-center text-xs text-white/40 leading-relaxed">
+  <a href="https://t.me/WatchNow_tv" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 mb-4 px-5 py-2.5 rounded-full glass text-sm font-bold text-white/85 hover:bg-white/10 active:scale-95 transition">انضم إلى قناتنا على تيليجرام</a>
+  <p>جميع المحتويات المعروضة من الملكية العامة أو برخص مفتوحة، والمصدر مذكور في كل عمل.</p>
+  <p class="mt-1">إذا كنت صاحب حقوق وترى أن عملاً ما لا يجب أن يظهر هنا، راسلنا عبر <a href="https://t.me/WatchNow_tv" target="_blank" rel="noopener noreferrer" class="underline hover:text-white/70">قناة تيليجرام</a> وسيُزال فوراً.</p>
 </footer>
 
+<!-- ============ نافذة التفاصيل ============ -->
+<div id="modal" class="fixed inset-0 z-50 hidden">
+  <div id="modalBack" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+  <div class="absolute inset-x-0 bottom-0 sm:inset-0 sm:flex sm:items-center sm:justify-center pointer-events-none">
+    <div id="modalBody" class="sheet pointer-events-auto glass bg-[#0c0c0c]/90 w-full sm:max-w-2xl max-h-[92vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl"></div>
+  </div>
+</div>
+
 <script>
-/* =========================================================
-   الإعدادات: عدّل هون بس
-   ========================================================= */
-const CONFIG = {
-  channel: "moviesTranslator",   // اسم قناتك على تيليجرام بدون @
+/* =====================================================================
+   الإعدادات: ألصق هنا رابط جدول جوجل المنشور بصيغة CSV
+   (ملف ← مشاركة ← نشر على الويب ← اختر الورقة ثم CSV)
+   إذا تركته فاضي، يعرض البيانات التجريبية بالأسفل.
+   ===================================================================== */
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1P6bevshy-JsSb4cqrcCHk_RDinr6Uxyj2L2g0YmdvWE/edit?usp=drivesdk";
+/* رابط خدمة التقييمات (Google Apps Script) - اختياري.
+   إذا تركته فاضي: التقييم يُحفظ على جهاز كل شخص فقط. */
+const RATINGS_API_URL = "";
+const SITE_NAME = "شاهد الآن | WatchNow";
+const BATCH = 24;
+const CACHE_KEY = "media_catalog_v1";
+const FALLBACK_TELEGRAM_CHANNEL = "https://t.me/";
 
-  // رابط جدول Google Sheets (اتركه فاضي لعرض النسخة التجريبية).
-  // أفضل رابط: ملف ← مشاركة ← نشر على الويب ← اختار CSV ← انسخ الرابط.
-  sheetCsvUrl: "https://docs.google.com/spreadsheets/d/1HYW073V-61WtpWmQJIj5yrFyNQzVlNddmRpzOZW2FcU/gviz/tq?tqx=out:csv",
+/* بيانات تجريبية (تُستبدل تلقائياً ببيانات الجدول) */
+const SAMPLE_DATA = [];
 
-  pageSize: 20               // عدد الأفلام بكل دفعة بقسم "كل الأفلام"
+/* ====================== أدوات مساعدة ====================== */
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+// توحيد النص العربي للبحث (إزالة التشكيل وتوحيد الألف والياء والتاء المربوطة)
+const norm = (s) => String(s ?? "").toLowerCase()
+  .replace(/[\u064B-\u065F\u0670\u0640]/g, "")
+  .replace(/[أإآٱ]/g, "ا").replace(/ى/g, "ي").replace(/ة/g, "ه")
+  .replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d))
+  .trim();
+
+// جلب قيمة من الصف بأكثر من اسم عمود (عربي أو إنجليزي)
+const pick = (row, keys) => {
+  for (const k of keys) {
+    const found = Object.keys(row).find(r => r.trim().toLowerCase() === k.toLowerCase());
+    if (found && String(row[found]).trim()) return String(row[found]).trim();
+  }
+  return "";
 };
 
-/* أفلام تجريبية (مشاع عام) بتظهر فقط إذا ما حطيت رابط الجدول */
-const SAMPLE = [
-  {title:"Nosferatu",year:"1922",duration:"94",genre:"رعب, كلاسيكي",story:"يسافر موظف عقارات إلى قلعة غامضة في ترانسيلفانيا ليبيع منزلًا للكونت أورلوك، فيكتشف أنه مصاص دماء يطارد زوجته ويجلب الطاعون إلى المدينة.",link:"https://t.me/cinema_mtrjm/1",featured:"نعم"},
-  {title:"Night of the Living Dead",year:"1968",duration:"96",genre:"رعب",story:"مجموعة غرباء تحتمي داخل منزل ريفي بينما تحاصرهم جثث عائدة من الموت، وتتصاعد الخلافات بينهم أكثر من الخطر الخارجي.",link:"https://t.me/cinema_mtrjm/2"},
-  {title:"Metropolis",year:"1927",duration:"153",genre:"خيال علمي, كلاسيكي",story:"في مدينة مستقبلية منقسمة بين نخبة تعيش فوق الأرض وعمال يكدحون تحتها، يقع ابن حاكم المدينة في حب فتاة من العمال ويكتشف حجم الظلم.",link:"https://t.me/cinema_mtrjm/3"},
-  {title:"The General",year:"1926",duration:"78",genre:"كوميديا, كلاسيكي",story:"سائق قطار في الحرب الأهلية الأمريكية يطارد قطارًا سُرق منه ومعه حبيبته، في مغامرة صامتة مليئة بالمشاهد الخطرة.",link:"https://t.me/cinema_mtrjm/4"},
-  {title:"Charade",year:"1963",duration:"113",genre:"غموض, كوميديا",story:"أرملة شابة في باريس يطاردها رجال يريدون مبلغًا مخفيًا تركه زوجها الراحل، وتجد في غريب جذاب حليفًا لا تعرف إن كان يمكن الوثوق به.",link:"https://t.me/cinema_mtrjm/5"},
-  {title:"His Girl Friday",year:"1940",duration:"92",genre:"كوميديا, كلاسيكي",story:"محرر صحفي يحاول استعادة زوجته السابقة ومراسلته اللامعة قبل أن تتزوج رجلًا آخر، عبر توريطها في قضية كبرى.",link:"https://t.me/cinema_mtrjm/6"},
-  {title:"Carnival of Souls",year:"1962",duration:"78",genre:"رعب, غموض",story:"امرأة تنجو من حادث سيارة مروّع، ثم تلاحقها رؤى رجل شاحب وبناية مهجورة غامضة.",link:"https://t.me/cinema_mtrjm/7"},
-  {title:"The Cabinet of Dr. Caligari",year:"1920",duration:"76",genre:"رعب, كلاسيكي",story:"منوّم مغناطيسي يعرض في معرض متجول نائمًا يتنبأ بالمستقبل، وتتزامن مع ظهورهما جرائم قتل غامضة في البلدة.",link:"https://t.me/cinema_mtrjm/8"}
-];
-/* ========================================================= */
+// تحويل رابط مشاركة درايف إلى رابط صورة مباشر
+function posterUrl(raw) {
+  if (!raw) return "";
+  const u = raw.trim();
+  const m = u.match(/drive\.google\.com\/file\/d\/([\w-]+)/) || u.match(/drive\.google\.com\/(?:open|uc|thumbnail)\?[^#]*id=([\w-]+)/);
+  if (m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w600`;
+  if (/^https?:\/\//i.test(u) || /^[\w./-]+\.(webp|jpg|jpeg|png|avif)$/i.test(u)) return u;
+  return "";
+}
 
-const $app = document.getElementById("app");
-const $hdr = document.getElementById("hdr");
-const joinUrl = "https://t.me/" + CONFIG.channel;
-const TG = '<svg class="tgi" viewBox="0 0 24 24"><path d="M9.8 15.6 9.6 19c.4 0 .6-.2.8-.4l2-1.9 4.1 3c.8.4 1.3.2 1.5-.7l2.7-12.9c.3-1.2-.4-1.7-1.2-1.4L3.8 10.1c-1.1.4-1.1 1.1-.2 1.4l4.3 1.3 9.9-6.2c.5-.3.9-.1.5.2z"/></svg>';
+// تحقق من رابط تيليجرام
+function tgUrl(raw) {
+  if (!raw) return "";
+  let u = raw.trim();
+  if (/^(t\.me|telegram\.me)\//i.test(u)) u = "https://" + u;
+  return /^https?:\/\/(t|telegram)\.me\/.+/i.test(u) ? u : "";
+}
 
-let films = [];
-const state = { q: "", genre: "", shown: CONFIG.pageSize };
+// تنسيق المدة: 95 -> "95 د"، 135 -> "2 س 15 د"
+function fmtDur(raw) {
+  const t = String(raw || "").replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+  const m = t.match(/\d+/);
+  const n = m ? parseInt(m[0], 10) : 0;
+  if (!n) return "";
+  return n >= 60 ? `${Math.floor(n / 60)} س${n % 60 ? ` ${n % 60} د` : ""}` : `${n} د`;
+}
+const isTrue = (v) => ["نعم", "yes", "true", "1", "y", "✓", "✔"].includes(String(v).trim().toLowerCase());
 
-document.getElementById("joinTop").href = joinUrl;
-document.getElementById("joinFoot").href = joinUrl;
-document.getElementById("copy").textContent = "© " + new Date().getFullYear() + " Cinema | أفلام مترجمة";
+/* ====================== الحالة ====================== */
+let ITEMS = [];
+let activeCat = "الكل";
+let query = "";
+let filtered = [];
+let shown = 0;
+let slideIdx = 0, slideTimer = null;
 
-/* ---------- أدوات ---------- */
-function el(tag, props, ...kids) {
-  const e = document.createElement(tag);
-  if (props) for (const k in props) {
-    if (k === "class") e.className = props[k];
-    else if (k === "html") e.innerHTML = props[k];
-    else if (k.startsWith("on")) e.addEventListener(k.slice(2), props[k]);
-    else e.setAttribute(k, props[k]);
+/* ====================== تحويل الصفوف إلى عناصر ====================== */
+function buildItems(rows) {
+  const out = [];
+  rows.forEach((row) => {
+    const title = pick(row, ["العنوان", "title"]);
+    if (!title) return; // تجاهل الصف الناقص
+    const tags = pick(row, ["التصنيف", "category"]).split(/[،,|]/).map(t => t.trim()).filter(Boolean);
+    out.push({
+      id: out.length,
+      title,
+      year: pick(row, ["السنة", "year"]),
+      tags,
+      desc: pick(row, ["الوصف", "description"]),
+      poster: posterUrl(pick(row, ["البوستر", "poster"])),
+      link: tgUrl(pick(row, ["رابط تيليجرام", "رابط", "link", "telegram"])),
+      license: pick(row, ["المصدر/الرخصة", "المصدر", "الرخصة", "license", "source"]),
+      duration: fmtDur(pick(row, ["المدة", "المدة بالدقائق", "duration", "runtime"])),
+      featured: isTrue(pick(row, ["مميز", "featured"])),
+      search: norm([title, pick(row, ["السنة", "year"]), pick(row, ["التصنيف", "category"]), pick(row, ["الوصف", "description"])].join(" "))
+    });
+  });
+  return out;
+}
+
+/* ====================== رابط الجدول ====================== */
+// يقبل رابط المشاركة العادي أو رابط النشر (CSV) ويحوله لرابط قراءة مناسب
+function sheetUrl(u) {
+  if (!u) return "";
+  if (/output=csv|tqx=out:csv/i.test(u)) return u;
+  const m = u.match(/spreadsheets\/d\/([\w-]+)/);
+  if (!m) return u;
+  const g = u.match(/[#&?]gid=(\d+)/);
+  return `https://docs.google.com/spreadsheets/d/${m[1]}/gviz/tq?tqx=out:csv&headers=1${g ? "&gid=" + g[1] : ""}`;
+}
+
+/* ====================== قراءة الجدول (طريقتان) ====================== */
+async function fetchSheetRows(u) {
+  try {
+    const res = await fetch(sheetUrl(u), { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const text = await res.text();
+    if (/^\s*<(!doctype|html)/i.test(text)) throw new Error("not csv");
+    return Papa.parse(text, { header: true, skipEmptyLines: "greedy" }).data;
+  } catch (e) {
+    // الطريقة الثانية: تعمل حتى لو منع المتصفح الطلب المباشر
+    const id = (u.match(/spreadsheets\/d\/([\w-]+)/) || [])[1];
+    if (!id) throw e;
+    return await jsonpRows(id, (u.match(/[#&?]gid=(\d+)/) || [])[1]);
   }
-  kids.flat().forEach(c => { if (c != null && c !== false) e.append(c.nodeType ? c : document.createTextNode(c)); });
-  return e;
 }
-
-function parseCSV(text) {
-  const rows = []; let row = [], cur = "", q = false;
-  text = text.replace(/^﻿/, "");
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (q) {
-      if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; }
-      else cur += c;
-    } else if (c === '"') q = true;
-    else if (c === ",") { row.push(cur); cur = ""; }
-    else if (c === "\n" || c === "\r") {
-      if (c === "\r" && text[i + 1] === "\n") i++;
-      row.push(cur); cur = ""; rows.push(row); row = [];
-    } else cur += c;
-  }
-  if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
-  return rows.filter(r => r.some(x => x.trim() !== ""));
-}
-
-/* روابط صور Google Drive بتتحول لرابط صورة مباشر */
-function fixImageUrl(u) {
-  u = (u || "").trim();
-  const m = u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]+)/);
-  return m ? "https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w600" : u;
-}
-
-function normalize(list) {
-  return list.map((r, i) => {
-    const link = (r.link || "").trim();
-    const m = link.match(/\/(\d+)\/?(?:\?.*)?$/);
-    return {
-      id: m ? m[1] : "r" + (i + 1),
-      title: (r.title || "").trim().replace(/\s*\((?:19|20)\d{2}\)\s*$/, ""),
-      year: (r.year || "").trim(),
-      duration: parseInt(r.duration, 10) || 0,
-      genres: (r.genre || "").split(/[,،]/).map(s => s.trim()).filter(Boolean),
-      story: (r.story || "").trim(),
-      link: link || joinUrl,
-      poster: fixImageUrl(r.poster),
-      featured: /^(نعم|yes|true|1|✓)$/i.test((r.featured || "").trim()),
-      order: i
+function jsonpRows(id, gid) {
+  return new Promise((resolve, reject) => {
+    const cb = "__sheet_cb_" + Date.now();
+    const sc = document.createElement("script");
+    const done = () => { try { delete window[cb]; } catch (_) { window[cb] = undefined; } sc.remove(); };
+    const timer = setTimeout(() => { done(); reject(new Error("timeout")); }, 15000);
+    window[cb] = (resp) => {
+      clearTimeout(timer); done();
+      try {
+        if (!resp || resp.status !== "ok") throw new Error("bad response");
+        const cols = resp.table.cols.map(c => (c.label || "").trim());
+        resolve(resp.table.rows.map(r => {
+          const o = {};
+          cols.forEach((c, i) => { const cell = r.c && r.c[i]; o[c] = cell ? (cell.v ?? cell.f ?? "") : ""; });
+          return o;
+        }));
+      } catch (e) { reject(e); }
     };
-  }).filter(f => f.title);
+    sc.onerror = () => { clearTimeout(timer); done(); reject(new Error("script error")); };
+    sc.src = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=responseHandler:${cb}&headers=1${gid ? "&gid=" + gid : ""}`;
+    document.head.appendChild(sc);
+  });
 }
 
-function sheetUrls(u) {
-  // رابط تحرير عادي → روابط تصدير CSV (الجدول لازم يكون مشارك "أي شخص معه الرابط")
-  const m = u.match(/\/spreadsheets\/d\/([\w-]+)/);
-  if (m && !/\/d\/e\//.test(u) && !/output=csv/.test(u)) {
-    const base = "https://docs.google.com/spreadsheets/d/" + m[1];
-    return [base + "/gviz/tq?tqx=out:csv", base + "/export?format=csv&gid=0"];
+/* ====================== جلب البيانات ====================== */
+async function loadData() {
+  // 1) اعرض النسخة المحفوظة فوراً إن وُجدت
+  let cached = null;
+  try { cached = JSON.parse(localStorage.getItem(CACHE_KEY) || "null"); } catch (_) {}
+  if (cached && cached.length) { ITEMS = buildItems(cached); initUI(); }
+  else { showSkeleton(); }
+
+  // 2) جلب النسخة الحديثة
+  try {
+    let rows;
+    if (!SHEET_CSV_URL) {
+      rows = SAMPLE_DATA;
+    } else {
+      rows = await fetchSheetRows(SHEET_CSV_URL);
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(rows)); } catch (_) {}
+    }
+    ITEMS = buildItems(rows);
+    initUI();
+  } catch (err) {
+    console.error(err);
+    if (!ITEMS.length) {
+      initUI();
+      showError("تعذر تحميل المحتوى حالياً. حدّث الصفحة بعد قليل.");
+    } else {
+      showError("تعذر تحديث البيانات، يتم عرض آخر نسخة محفوظة.");
+    }
   }
-  return [u];
 }
 
-async function loadFilms() {
-  if (!CONFIG.sheetCsvUrl) {
-    document.getElementById("demo").hidden = false;
-    return normalize(SAMPLE);
+function showError(msg) { const e = $("#error"); e.textContent = msg; e.classList.remove("hidden"); }
+
+function showSkeleton() {
+  $("#grid").innerHTML = Array.from({ length: 12 }, () => `<div class="skeleton aspect-[2/3] rounded-xl"></div>`).join("");
+}
+
+/* ====================== البوستر (مع بديل أنيق) ====================== */
+function fallbackPoster(title, cls = "") {
+  return `<div class="${cls} w-full h-full flex flex-col items-center justify-center p-3 text-center bg-gradient-to-br from-[#1c1c1f] via-[#0e0e10] to-black">
+    <svg class="w-8 h-8 text-white/35 mb-2" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/></svg>
+    <span class="font-bold text-sm leading-snug text-white/90 clamp-3">${esc(title)}</span></div>`;
+}
+function posterHTML(it, cls = "") {
+  if (!it.poster) return fallbackPoster(it.title, cls);
+  return `<img src="${esc(it.poster)}" alt="${esc(it.title)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-title="${esc(it.title)}" class="${cls} w-full h-full object-cover">`;
+}
+// إذا فشلت صورة، استبدلها ببوستر بديل
+document.addEventListener("error", (e) => {
+  const t = e.target;
+  if (t && t.tagName === "IMG" && t.dataset.title) {
+    const wrap = document.createElement("div");
+    wrap.className = "w-full h-full";
+    wrap.innerHTML = fallbackPoster(t.dataset.title);
+    t.replaceWith(wrap);
   }
-  let lastErr;
-  for (const url of sheetUrls(CONFIG.sheetCsvUrl)) {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("sheet " + res.status);
-      const rows = parseCSV(await res.text());
-      const head = rows.shift().map(h => h.trim().toLowerCase());
-      return normalize(rows.map(r => Object.fromEntries(head.map((h, i) => [h, r[i] || ""]))));
-    } catch (e) { lastErr = e; }
-  }
-  throw lastErr;
+}, true);
+
+/* ====================== السلايدر ====================== */
+function buildHero() {
+  let feat = ITEMS.filter(i => i.featured);
+  if (!feat.length) feat = ITEMS.slice(0, 5);
+  feat = feat.slice(0, 6);
+  const hero = $("#hero");
+  if (!feat.length) { hero.classList.add("hidden"); return; }
+  hero.classList.remove("hidden");
+
+  $("#slides").innerHTML = feat.map((it, i) => `
+    <article class="slide absolute inset-0 ${i === 0 ? "active" : ""}" data-i="${i}">
+      <div class="bg absolute inset-0">
+        ${it.poster ? `<img src="${esc(it.poster)}" alt="" referrerpolicy="no-referrer" class="w-full h-full object-cover opacity-40 blur-[2px]" data-title="${esc(it.title)}">` : `<div class="w-full h-full bg-gradient-to-br from-[#1f1f23] via-[#0e0e10] to-black"></div>`}
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-black/40 to-black/30"></div>
+      <div class="absolute inset-0 bg-gradient-to-l from-transparent via-black/20 to-black/70"></div>
+      <div class="relative h-full max-w-7xl mx-auto px-5 flex flex-col justify-end pb-16">
+        <div class="flex items-center gap-2 text-xs font-semibold mb-3">
+          <span class="bg-white/15 text-white/90 px-2 py-0.5 rounded">مميز</span>
+          ${it.year ? `<span class="text-white/70">${esc(it.year)}</span>` : ""}
+          ${it.duration ? `<span class="text-white/70">• ${esc(it.duration)}</span>` : ""}
+          ${it.tags[0] ? `<span class="text-white/70">• ${esc(it.tags[0])}</span>` : ""}
+        </div>
+        <h1 class="text-4xl sm:text-6xl font-black leading-tight drop-shadow-lg max-w-3xl">${esc(it.title)}</h1>
+        <p class="mt-3 text-sm sm:text-base text-white/75 max-w-xl clamp-3">${esc(it.desc)}</p>
+        <div class="mt-5 flex gap-3">
+          ${it.link ? `<a href="${esc(it.link)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-brand hover:bg-brand-dark active:scale-95 transition px-6 py-3 rounded-xl font-bold shadow-md shadow-black/30">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>مشاهدة</a>` : ""}
+          <button data-open="${it.id}" class="glass px-6 py-3 rounded-xl font-bold hover:bg-white/10 active:scale-95 transition">التفاصيل</button>
+        </div>
+      </div>
+    </article>`).join("");
+
+  $("#dots").innerHTML = feat.map((_, i) => `<button aria-label="شريحة ${i + 1}" data-dot="${i}" class="h-1.5 rounded-full transition-all ${i === 0 ? "w-8 bg-brand" : "w-3 bg-white/30"}"></button>`).join("");
+  slideIdx = 0;
+  startSlider(feat.length);
 }
 
-function fmtDuration(min) {
-  if (!min) return "";
-  const h = Math.floor(min / 60), m = min % 60;
-  return ((h ? h + " س " : "") + (m ? m + " د" : "")).trim();
+function goSlide(i, total) {
+  slideIdx = (i + total) % total;
+  document.querySelectorAll(".slide").forEach((s, k) => s.classList.toggle("active", k === slideIdx));
+  document.querySelectorAll("#dots button").forEach((d, k) => {
+    d.className = "h-1.5 rounded-full transition-all " + (k === slideIdx ? "w-8 bg-brand" : "w-3 bg-white/30");
+  });
 }
-function shortStory(s, n = 100) { return s.length > n ? s.slice(0, n).trim() + "…" : s; }
-function hue(str) { let h = 0; for (const c of str) h = (h * 31 + c.charCodeAt(0)) % 360; return h; }
-function posterSources(f) { return [f.poster, "posters/" + f.id + ".jpg"].filter(Boolean); }
-
-function poster(f, overlay) {
-  const h = hue(f.title);
-  const fb = el("div", { class: "fb", style: `background:linear-gradient(165deg,hsl(${h} 38% 17%),hsl(${(h + 30) % 360} 30% 6%))` },
-    el("b", null, f.title), el("small", null, f.year));
-  const wrap = el("div", { class: "poster" }, fb);
-  const srcs = posterSources(f);
-  (function tryNext(i) {
-    if (i >= srcs.length) return;
-    const img = document.createElement("img");
-    img.alt = f.title; img.loading = "lazy"; img.decoding = "async"; img.referrerPolicy = "no-referrer";
-    img.style.opacity = "0"; img.style.transition = "opacity .35s";
-    img.onload = () => { img.style.opacity = "1"; fb.remove(); };
-    img.onerror = () => { img.remove(); tryNext(i + 1); };
-    wrap.prepend(img);
-    img.src = srcs[i];
-  })(0);
-  if (overlay) wrap.append(el("div", { class: "ov" }, el("i")));
-  return wrap;
+function startSlider(total) {
+  clearInterval(slideTimer);
+  if (total < 2) return;
+  slideTimer = setInterval(() => goSlide(slideIdx + 1, total), 6500);
+  const hero = $("#hero");
+  let x0 = null;
+  hero.ontouchstart = (e) => { x0 = e.touches[0].clientX; };
+  hero.ontouchend = (e) => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) { goSlide(slideIdx + (dx > 0 ? 1 : -1), total); startSlider(total); }
+    x0 = null;
+  };
+  $("#dots").onclick = (e) => {
+    const b = e.target.closest("[data-dot]");
+    if (b) { goSlide(+b.dataset.dot, total); startSlider(total); }
+  };
 }
 
-function card(f, withStory) {
-  return el("a", { class: "card", href: "?f=" + encodeURIComponent(f.id), 
+/* ====================== الفلاتر ====================== */
+function buildChips() {
+  const counts = {};
+  ITEMS.forEach(i => i.tags.forEach(t => counts[t] = (counts[t] || 0) + 1));
+  const cats = ["الكل", ...Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b, "ar"))];
+  $("#chips").innerHTML = cats.map(c => `
+    <button data-cat="${esc(c)}" class="shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold border transition active:scale-95
+      ${c === activeCat ? "bg-brand border-brand text-white shadow-md shadow-black/30" : "border-white/15 text-white/70 hover:border-white/40"}">${esc(c)}</button>`).join("");
+}
+
+/* ====================== الشبكة (تحميل تدريجي) ====================== */
+function applyFilters() {
+  const q = norm(query);
+  renderSuggest();
+  filtered = ITEMS.filter(i => (activeCat === "الكل" || i.tags.includes(activeCat)) && (!q || i.search.includes(q)));
+  shown = 0;
+  $("#grid").innerHTML = "";
+  $("#gridTitle").textContent = q ? "نتائج البحث" : (activeCat === "الكل" ? "كل الأفلام" : activeCat);
+  $("#count").textContent = filtered.length + " عمل";
+  $("#empty").classList.toggle("hidden", filtered.length > 0);
+  renderMore();
+}
+
+function cardHTML(it) {
+  return `<button data-open="${it.id}" class="card fade-in text-right group focus:outline-none">
+    <div class="relative aspect-[2/3] rounded-xl overflow-hidden bg-[#141414] ring-1 ring-white/10">
+      ${posterHTML(it)}
+      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent"></div>
+      ${it.year ? `<span class="absolute top-2 left-2 glass text-[11px] font-bold px-2 py-0.5 rounded-md">${esc(it.year)}</span>` : ""}
+      ${ratingBadge(it)}
+      <div class="absolute bottom-0 inset-x-0 p-2.5">
+        <h3 class="font-bold text-sm leading-snug clamp-2">${esc(it.title)}</h3>
+        ${(it.tags[0] || it.duration) ? `<p class="text-[11px] text-white/50 mt-0.5">${[it.tags[0], it.duration].filter(Boolean).map(esc).join(" • ")}</p>` : ""}
+      </div>
+    </div>
+  </button>`;
+}
+
+function renderMore() {
+  if (shown >= filtered.length) return;
+  const next = filtered.slice(shown, shown + BATCH);
+  $("#grid").insertAdjacentHTML("beforeend", next.map(cardHTML).join(""));
+  shown += next.length;
+}
+
+const io = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) renderMore();
+}, { rootMargin: "600px" });
+
+/* ====================== الفيلم المقترح (يتبدل كل 5 ساعات) ====================== */
+const SUGGEST_HOURS = 5;
+let suggestKey = "";
+function hashStr(str) { let h = 5381; for (const ch of str) h = ((h << 5) + h + ch.charCodeAt(0)) >>> 0; return h; }
+function currentSuggestion() {
+  const list = ITEMS.slice().sort((x, y) => hashStr(x.title + x.year) - hashStr(y.title + y.year));
+  if (!list.length) return null;
+  const slotMs = SUGGEST_HOURS * 3600 * 1000;
+  const slot = Math.floor(Date.now() / slotMs);
+  return { item: list[slot % list.length], slot, endsIn: (slot + 1) * slotMs - Date.now() };
+}
+function leftText(ms) {
+  const h = Math.floor(ms / 3600000), m = Math.floor((ms % 3600000) / 60000);
+  return h > 0 ? `${h} س و ${m} د` : `${m} د`;
+}
+function renderSuggest() {
+  const box = $("#suggest");
+  if (!box) return;
+  if (norm(query)) { box.innerHTML = ""; suggestKey = ""; return; } // يختفي أثناء البحث
+  const sg = currentSuggestion();
+  if (!sg) { box.innerHTML = ""; return; }
+  const it = sg.item;
+  const key = sg.slot + "|" + it.id + "|" + ITEMS.length;
+  if (key === suggestKey) { const l = $("#suggestLeft"); if (l) l.textContent = leftText(sg.endsIn); return; }
+  suggestKey = key;
+  box.innerHTML = `
+    <div class="mb-8 fade-in">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-xl font-extrabold flex items-center gap-2"><span class="w-1.5 h-5 rounded-full bg-brand"></span>فيلم مقترح لك</h2>
+        <span class="text-xs text-white/40">يتبدل بعد <span id="suggestLeft">${leftText(sg.endsIn)}</span></span>
+      </div>
+      <div class="glass rounded-2xl p-3 sm:p-4 flex gap-4 items-stretch">
+        <button data-open="${it.id}" class="card shrink-0 w-28 sm:w-36 aspect-[2/3] rounded-xl overflow-hidden ring-1 ring-white/10 bg-[#141414]" aria-label="${esc(it.title)}">${posterHTML(it)}</button>
+        <div class="flex flex-col justify-center min-w-0 flex-1">
+          <div class="flex flex-wrap items-center gap-2 text-xs text-white/55 mb-1.5">
+            ${it.year ? `<span>${esc(it.year)}</span>` : ""}
+            ${it.duration ? `<span>• ${esc(it.duration)}</span>` : ""}
+            ${it.tags.slice(0, 2).map(t => `<span>• ${esc(t)}</span>`).join("")}
+          </div>
+          <h3 class="text-xl sm:text-2xl font-black leading-snug clamp-2">${esc(it.title)}</h3>
+          <p class="mt-2 text-sm text-white/65 leading-relaxed clamp-3">${esc(it.desc)}</p>
+          <div class="mt-4 flex gap-2">
+            ${it.link ? `<a href="${esc(it.link)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-brand hover:bg-brand-dark active:scale-95 transition px-5 py-2.5 rounded-xl font-bold text-sm shadow-md shadow-black/30">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>شاهد الآن</a>` : ""}
+            <button data-open="${it.id}" class="glass px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-white/10 active:scale-95 transition">التفاصيل</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+setInterval(renderSuggest, 60000);
+
+/* ====================== التقييم (5 نجوم) ====================== */
+const MY_KEY = "media_my_ratings_v1", AGG_KEY = "media_agg_ratings_v1", UID_KEY = "media_uid_v1";
+let MY = {}, AGG = {}, modalItem = null;
+try { MY = JSON.parse(localStorage.getItem(MY_KEY) || "{}"); } catch (_) {}
+try { AGG = JSON.parse(localStorage.getItem(AGG_KEY) || "{}"); } catch (_) {}
+function getUid() {
+  try {
+    let u = localStorage.getItem(UID_KEY);
+    if (!u) { u = (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2)); localStorage.setItem(UID_KEY, u); }
+    return u;
+  } catch (_) { return "anon-" + Math.random().toString(36).slice(2); }
+}
+const filmKey = (it) => "f" + hashStr(it.title + "|" + it.year).toString(36);
+function ratingBadge(it) {
+  const a = AGG[filmKey(it)];
+  return a && a.count ? `<span class="absolute top-2 right-2 glass text-[11px] font-bold px-2 py-0.5 rounded-md text-amber-400">★ ${Number(a.avg).toFixed(1)}</span>` : "";
+}
+function ratingInner(it) {
+  const key = filmKey(it), mine = MY[key] || 0, a = AGG[key];
+  const stars = [1, 2, 3, 4, 5].map(n => `<button type="button" data-star="${n}" aria-label="${n} من 5" class="p-0.5 transition active:scale-90 ${n <= mine ? "text-amber-400" : "text-white/25"}">
+      <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.95 6 6.55.95-4.75 4.62 1.12 6.53L12 17.5l-5.87 3.1 1.12-6.53L2.5 9.45l6.55-.95z"/></svg></button>`).join("");
+  let line;
+  if (a && a.count) line = `<span class="text-amber-400 font-bold">★ ${Number(a.avg).toFixed(1)}</span> <span class="text-white/45">(${a.count} تقييم)</span>${mine ? ` <span class="text-white/45">• تقييمك ${mine}</span>` : ""}`;
+  else if (mine) line = `<span class="text-white/55">تقييمك: ${mine} من 5</span>`;
+  else line = `<span class="text-white/45">اضغط على نجمة لتقييم الفيلم</span>`;
+  return `<div class="flex">${stars}</div><div class="text-[11px] mt-0.5">${line}</div>`;
+}
+function paintRating(it) {
+  const box = $("#ratingBox");
+  if (box && modalItem === it) box.innerHTML = ratingInner(it);
+}
+async function rate(n) {
+  const it = modalItem;
+  if (!it) return;
+  const key = filmKey(it);
+  MY[key] = n;
+  try { localStorage.setItem(MY_KEY, JSON.stringify(MY)); } catch (_) {}
+  paintRating(it);
+  if (!RATINGS_API_URL) return;
+  try {
+    const res = await fetch(RATINGS_API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ key, uid: getUid(), stars: n }) });
+    const j = await res.json();
+    if (j && j.ok) {
+      AGG[key] = { avg: j.avg, count: j.count };
+      try { localStorage.setItem(AGG_KEY, JSON.stringify(AGG)); } catch (_) {}
+      paintRating(it);
+    }
+  } catch (err) { console.error(err); }
+}
+async function loadRatings() {
+  if (!RATINGS_API_URL) return;
+  try {
+    const res = await fetch(RATINGS_API_URL, { cache: "no-store" });
+    const j = await res.json();
+    if (j && j.ok && j.ratings) {
+      AGG = j.ratings;
+      try { localStorage.setItem(AGG_KEY, JSON.stringify(AGG)); } catch (_) {}
+      if (ITEMS.length) applyFilters();
+    }
+  } catch (err) { console.error(err); }
+}
+
+/* ====================== نافذة التفاصيل ====================== */
+function openModal(id) {
+  const it = ITEMS[id];
+  if (!it) return;
+  modalItem = it;
+  $("#modalBody").innerHTML = `
+    <div class="relative overflow-hidden rounded-t-3xl">
+      <div class="absolute inset-0">
+        ${it.poster ? `<img src="${esc(it.poster)}" alt="" referrerpolicy="no-referrer" data-title="${esc(it.title)}" class="w-full h-full object-cover opacity-30 blur-xl scale-125">` : `<div class="w-full h-full bg-gradient-to-br from-[#1f1f23] to-black"></div>`}
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-[#0c0c0c]/60 to-transparent"></div>
+      </div>
+      <button id="closeModal" aria-label="إغلاق" class="absolute top-3 left-3 z-10 glass w-10 h-10 rounded-full flex items-center justify-center text-lg active:scale-90 transition">✕</button>
+      <div class="relative px-5 pt-14 pb-5 flex gap-4 items-end">
+        <div class="w-32 sm:w-40 shrink-0 aspect-[2/3] rounded-xl overflow-hidden ring-1 ring-white/15 shadow-2xl shadow-black/70 bg-[#141414]">${posterHTML(it)}</div>
+        <div class="min-w-0 pb-1">
+          <h2 class="text-2xl sm:text-3xl font-black leading-snug">${esc(it.title)}</h2>
+          <div class="flex flex-wrap items-center gap-2 mt-3 text-xs">
+            ${it.year ? `<span class="glass px-3 py-1 rounded-full font-bold">${esc(it.year)}</span>` : ""}
+            ${it.duration ? `<span class="glass px-3 py-1 rounded-full font-bold">⏱ ${esc(it.duration)}</span>` : ""}
+            ${it.tags.map(t => `<span class="px-3 py-1 rounded-full bg-white/10 text-white/75 font-medium">${esc(t)}</span>`).join("")}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="px-5 pb-6">
+      <h3 class="text-sm font-bold text-white/50 mb-2">القصة</h3>
+      <p class="text-white/85 leading-loose text-[15px]">${esc(it.desc) || "لا يوجد وصف."}</p>
+      ${it.license ? `<p class="mt-4 text-xs text-white/40">المصدر / الرخصة: ${esc(it.license)}</p>` : ""}
+      <div class="mt-6 pt-5 border-t border-white/10 flex items-center gap-4">
+        ${it.link
+          ? `<a href="${esc(it.link)}" target="_blank" rel="noopener noreferrer" class="shrink-0 flex items-center justify-center gap-2 bg-brand hover:bg-brand-dark active:scale-95 transition px-6 py-3.5 rounded-xl font-bold shadow-md shadow-black/30">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>مشاهدة</a>`
+          : `<div class="shrink-0 text-center px-5 py-3.5 rounded-xl bg-white/5 text-white/40 font-semibold">الرابط غير متوفر</div>`}
+        <div id="ratingBox" class="min-w-0">${ratingInner(it)}</div>
+      </div>
+    </div>`;
+  $("#modalBody").scrollTop = 0;
+  $("#modal").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+}
+function closeModal() {
+  modalItem = null;
+  $("#modal").classList.add("hidden");
+  document.body.style.overflow = "";
+}
+
+/* ====================== الأحداث ====================== */
+document.addEventListener("click", (e) => {
+  const star = e.target.closest("[data-star]");
+  if (star) return rate(+star.dataset.star);
+  const open = e.target.closest("[data-open]");
+  if (open) return openModal(+open.dataset.open);
+  const cat = e.target.closest("[data-cat]");
+  if (cat) { activeCat = cat.dataset.cat; buildChips(); applyFilters(); window.scrollTo({ top: $("#chips").offsetTop - 80, behavior: "smooth" }); return; }
+  if (e.target.id === "modalBack" || e.target.closest("#closeModal")) closeModal();
+});
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+let searchTimer;
+$("#search").addEventListener("input", (e) => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => { query = e.target.value; applyFilters(); }, 180);
+});
+
+window.addEventListener("scroll", () => {
+  $("#topbar").classList.toggle("glass", window.scrollY > 40);
+}, { passive: true });
+
+/* ====================== التشغيل ====================== */
+function initUI() {
+  buildHero();
+  buildChips();
+  applyFilters();
+}
+io.observe($("#sentinel"));
+loadData();
+loadRatings();
+</script>
+</body>
+</html>
