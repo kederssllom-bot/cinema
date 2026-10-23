@@ -1,0 +1,12 @@
+{
+  "appId": "com.watchnow.app",
+  "appName": "WatchNow",
+  "webDir": "www",
+  "server": {
+    "url": "https://kederssllom-bot.github.io/cinema/",
+    "allowNavigation": ["kederssllom-bot.github.io"]
+  },
+  "android": {
+    "backgroundColor": "#050505"
+  }
+}
