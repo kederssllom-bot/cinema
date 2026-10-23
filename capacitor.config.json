@@ -7,6 +7,7 @@
     "allowNavigation": ["kederssllom-bot.github.io"]
   },
   "android": {
-    "backgroundColor": "#050505"
+    "backgroundColor": "#050505",
+    "appendUserAgent": "WatchNowApp"
   }
 }
