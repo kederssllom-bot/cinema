@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>اختبار تضمين تيليجرام</title>
+<style>
+  body { background:#0b0b0b; color:#fff; font-family:system-ui,sans-serif; padding:16px; max-width:520px; margin:0 auto; }
+  h3 { margin:0 0 8px; }
+  p { color:rgba(255,255,255,.7); font-size:14px; line-height:1.7; margin:0 0 14px; }
+  input { width:100%; box-sizing:border-box; padding:12px; border-radius:10px; border:1px solid #333; background:#161616; color:#fff; font-size:15px; direction:ltr; }
+  button { margin-top:10px; width:100%; padding:13px; border:0; border-radius:10px; background:#e50914; color:#fff; font-size:16px; font-weight:800; }
+  #msg { margin:14px 0; color:#ff4d57; font-size:14px; line-height:1.7; }
+  iframe { width:100%; height:560px; border:0; background:#fff; border-radius:12px; margin-top:6px; }
+</style>
+</head>
+<body>
+<h3>اختبار تضمين تيليجرام</h3>
+<p>الصق رابط منشور فيديو من قناة <b>عامة</b>، شكله: t.me/اسم_القناة/123</p>
+<input id="u" type="url" placeholder="https://t.me/channel/123">
+<button id="go" type="button">عرض الفيديو</button>
+<div id="msg"></div>
+<div id="out"></div>
+<script>
+document.getElementById("go").onclick = function () {
+  var v = document.getElementById("u").value.trim();
+  var msg = document.getElementById("msg");
+  var out = document.getElementById("out");
+  msg.textContent = ""; out.innerHTML = "";
+  if (/(t|telegram)\.me\/c\//i.test(v)) {
+    msg.textContent = "هذا رابط منشور من قناة خاصة، والتضمين لا يعمل مع القنوات الخاصة. استخدم منشوراً من قناة عامة.";
+    return;
+  }
+  var m = v.match(/(?:t|telegram)\.me\/(?:s\/)?([A-Za-z][A-Za-z0-9_]{3,})\/(\d+)/);
+  if (!m) {
+    msg.textContent = "الرابط غير صحيح. يجب أن يكون مثل: t.me/اسم_القناة/123";
+    return;
+  }
+  var f = document.createElement("iframe");
+  f.src = "https://t.me/" + m[1] + "/" + m[2] + "?embed=1&mode=tme";
+  f.setAttribute("allowfullscreen", "");
+  out.appendChild(f);
+};
+</script>
+</body>
+</html>
