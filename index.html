@@ -199,11 +199,6 @@ let filtered = [];
 let shown = 0;
 let slideIdx = 0, slideTimer = null;
 
-// رابط فيديو مباشر (mp4 أو m3u8) يبدأ بـ https
-function vidUrl(u) {
-  u = String(u || "").trim();
-  return /^https:\/\/[^\s]+$/i.test(u) ? u : "";
-}
 
 /* ====================== تحويل الصفوف إلى عناصر ====================== */
 function buildItems(rows) {
@@ -220,7 +215,6 @@ function buildItems(rows) {
       desc: pick(row, ["الوصف", "description"]),
       poster: posterUrl(pick(row, ["البوستر", "poster"])),
       link: tgUrl(pick(row, ["رابط تيليجرام", "رابط", "link", "telegram"])),
-      video: vidUrl(pick(row, ["رابط الفيديو", "فيديو", "video", "video_url"])),
       license: pick(row, ["المصدر/الرخصة", "المصدر", "الرخصة", "license", "source"]),
       duration: fmtDur(pick(row, ["المدة", "المدة بالدقائق", "duration", "runtime"])),
       featured: isTrue(pick(row, ["مميز", "featured"])),
@@ -374,7 +368,7 @@ function buildHero() {
         <h1 class="text-3xl sm:text-5xl font-black leading-tight drop-shadow-lg max-w-3xl">${esc(it.title)}</h1>
         <p class="mt-2 text-xs sm:text-base text-white/75 max-w-xl clamp-2">${esc(it.desc)}</p>
         <div class="mt-3 flex gap-2.5">
-          ${it.video ? playBtn(it) : it.link ? `<a href="${esc(it.link)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-white text-black hover:bg-white/80 active:scale-95 transition px-5 py-2.5 rounded-md font-bold text-sm shadow-md shadow-black/30">
+          ${it.link ? `<a href="${esc(it.link)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-white text-black hover:bg-white/80 active:scale-95 transition px-5 py-2.5 rounded-md font-bold text-sm shadow-md shadow-black/30">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>مشاهدة</a>` : ""}
           <button data-open="${it.id}" class="bg-white/15 text-white px-5 py-2.5 rounded-md font-bold text-sm active:scale-95 transition">التفاصيل</button>
         </div>
@@ -522,7 +516,7 @@ function renderSuggest() {
           <h3 class="text-xl sm:text-2xl font-black leading-snug clamp-2">${esc(it.title)}</h3>
           <p class="mt-2 text-sm text-white/65 leading-relaxed clamp-3">${esc(it.desc)}</p>
           <div class="mt-4 flex gap-2">
-            ${it.video ? playBtn(it) : it.link ? `<a href="${esc(it.link)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-white text-black hover:bg-white/80 active:scale-95 transition px-5 py-2.5 rounded-md font-bold text-sm shadow-md shadow-black/30">
+            ${it.link ? `<a href="${esc(it.link)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-white text-black hover:bg-white/80 active:scale-95 transition px-5 py-2.5 rounded-md font-bold text-sm shadow-md shadow-black/30">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>شاهد الآن</a>` : ""}
             <button data-open="${it.id}" class="glass px-5 py-2.5 rounded-md font-bold text-sm hover:bg-white/10 active:scale-95 transition">التفاصيل</button>
           </div>
@@ -614,11 +608,8 @@ function openModal(id) {
       </div>
     </div>
     <div class="px-5 pb-6">
-      ${it.video
-        ? `<button type="button" data-play="${it.id}" class="flex items-center justify-center gap-2 bg-brand text-white hover:opacity-90 active:scale-95 transition w-full py-3.5 rounded-md font-bold text-base shadow-lg"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>تشغيل الفيلم</button>`
-        : it.link
-        ? `<a href="${esc(it.link)}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 bg-white text-black hover:bg-white/80 active:scale-95 transition w-full py-3 rounded-md font-bold"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>مشاهدة</a>
-           <div class="mt-3 rounded-lg px-3.5 py-3 text-[13px] leading-relaxed" style="background:rgba(229,9,20,.12);border:1px solid rgba(229,9,20,.55);border-right:4px solid #e50914;"><span style="color:#d9b45f;font-weight:800;">تنبيه:</span> <span class="text-white/90">يلزم الانضمام إلى قناتنا على تيليجرام ليعمل الفيديو.</span> <a href="${CHANNEL_INVITE}" target="_blank" rel="noopener noreferrer" style="color:#ff4d57;font-weight:800;text-decoration:underline;">الانضمام من هنا</a></div>`
+      ${it.link
+        ? `<a href="${esc(it.link)}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 bg-white text-black hover:bg-white/80 active:scale-95 transition w-full py-3 rounded-md font-bold"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>مشاهدة</a>`
         : `<div class="text-center py-3 rounded-md bg-white/10 text-white/50 font-semibold">الرابط غير متوفر</div>`}
       <p class="mt-4 text-white/85 leading-loose text-[15px]">${esc(it.desc) || "لا يوجد وصف."}</p>
       <div id="ratingBox" class="mt-4">${ratingInner(it)}</div>
@@ -675,258 +666,6 @@ $("#searchBtn").addEventListener("click", () => {
 window.addEventListener("scroll", () => { $("#topbar").classList.toggle("bg-black", window.scrollY > 40); }, { passive: true });
 
 
-/* ====================== مشغّل الفيديو ====================== */
-const POS_KEY = "wn_pos:";
-let playerOpen = false, hlsInst = null, ctrlTimer = null, lastTap = 0, lastSave = 0, wakeLock = null, curItem = null, dragging = false;
-const SPEEDS = [1, 1.25, 1.5, 2, 0.75];
-let speedIdx = 0;
-
-const fmtTime = (s) => {
-  s = Math.max(0, Math.floor(s || 0));
-  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), x = s % 60;
-  return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(x).padStart(2, "0");
-};
-function playBtn(it) {
-  return `<button type="button" data-play="${it.id}" class="flex items-center gap-2 bg-brand text-white hover:opacity-90 active:scale-95 transition px-5 py-2.5 rounded-md font-bold text-sm shadow-md shadow-black/30"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>تشغيل</button>`;
-}
-
-const ICON = {
-  play: '<svg viewBox="0 0 24 24" fill="currentColor" width="34" height="34"><path d="M8 5v14l11-7z"/></svg>',
-  pause: '<svg viewBox="0 0 24 24" fill="currentColor" width="34" height="34"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>',
-  back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M15 5l-7 7 7 7"/></svg>',
-  rw: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><text x="12" y="15.5" font-size="7" font-weight="700" text-anchor="middle" fill="currentColor" stroke="none">10</text></svg>',
-  ff: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/><text x="12" y="15.5" font-size="7" font-weight="700" text-anchor="middle" fill="currentColor" stroke="none">10</text></svg>',
-  fs: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>'
-};
-
-function buildPlayer() {
-  if ($("#player")) return;
-  const btn = "pointer-events:auto;color:#fff;display:flex;align-items:center;justify-content:center;background:transparent;border:0;padding:0;";
-  const p = document.createElement("div");
-  p.id = "player";
-  p.dir = "ltr";
-  p.style.cssText = "position:fixed;inset:0;z-index:150;background:#000;display:none;user-select:none;-webkit-user-select:none;touch-action:manipulation;font-family:Cairo,system-ui,sans-serif;";
-  p.innerHTML = `
-    <video id="pv" playsinline webkit-playsinline preload="metadata" controlsList="nodownload" disablePictureInPicture style="width:100%;height:100%;object-fit:contain;background:#000;"></video>
-    <div id="pTap" style="position:absolute;inset:0;"></div>
-    <div id="pSpin" style="position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border:4px solid rgba(255,255,255,.25);border-top-color:#e50914;border-radius:50%;animation:pSpin .8s linear infinite;display:none;pointer-events:none;"></div>
-    <div id="pToast" style="position:absolute;left:50%;top:22%;transform:translateX(-50%);background:rgba(0,0,0,.75);color:#fff;padding:8px 16px;border-radius:999px;font-size:13px;font-weight:700;display:none;pointer-events:none;white-space:nowrap;" dir="rtl"></div>
-    <div id="pUI" style="position:absolute;inset:0;pointer-events:none;transition:opacity .25s,visibility .25s;">
-      <div style="position:absolute;top:0;left:0;right:0;padding:calc(env(safe-area-inset-top) + 10px) 12px 26px;background:linear-gradient(rgba(0,0,0,.8),transparent);display:flex;align-items:center;gap:10px;">
-        <button id="pBack" type="button" aria-label="رجوع" style="${btn}width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.12);">${ICON.back}</button>
-        <div id="pTitle" dir="rtl" style="flex:1;color:#fff;font-weight:800;font-size:16px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-align:right;"></div>
-      </div>
-      <div style="position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;gap:34px;">
-        <button id="pRw" type="button" aria-label="رجوع 10 ثوانٍ" style="${btn}width:56px;height:56px;">${ICON.rw}</button>
-        <button id="pPlay" type="button" aria-label="تشغيل أو إيقاف" style="${btn}width:72px;height:72px;border-radius:50%;background:rgba(229,9,20,.92);box-shadow:0 6px 24px rgba(229,9,20,.45);">${ICON.play}</button>
-        <button id="pFf" type="button" aria-label="تقديم 10 ثوانٍ" style="${btn}width:56px;height:56px;">${ICON.ff}</button>
-      </div>
-      <div style="position:absolute;bottom:0;left:0;right:0;padding:30px 14px calc(env(safe-area-inset-bottom) + 12px);background:linear-gradient(transparent,rgba(0,0,0,.85));">
-        <div style="display:flex;align-items:center;gap:10px;pointer-events:auto;">
-          <span id="pCur" style="color:#fff;font-size:12px;min-width:38px;font-variant-numeric:tabular-nums;">0:00</span>
-          <input id="pSeek" type="range" min="0" max="1000" step="1" value="0" style="flex:1;height:28px;">
-          <span id="pDur" style="color:#fff;font-size:12px;min-width:38px;text-align:right;font-variant-numeric:tabular-nums;">0:00</span>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
-          <button id="pSpeed" type="button" aria-label="السرعة" style="${btn}padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.14);font-weight:800;font-size:13px;">1x</button>
-          <button id="pFs" type="button" aria-label="ملء الشاشة" style="${btn}width:42px;height:42px;">${ICON.fs}</button>
-        </div>
-      </div>
-    </div>
-    <div id="pErr" dir="rtl" style="position:absolute;inset:0;background:rgba(0,0,0,.88);display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center;gap:16px;">
-      <div style="font-size:38px;">⚠️</div>
-      <div style="color:#fff;font-weight:800;font-size:17px;line-height:1.7;">تعذّر تشغيل الفيديو</div>
-      <div style="color:rgba(255,255,255,.65);font-size:14px;line-height:1.8;">يرجى التحقق من الاتصال بالإنترنت ثم إعادة المحاولة.</div>
-      <button id="pRetry" type="button" style="background:#e50914;color:#fff;font-weight:800;padding:12px 30px;border-radius:12px;">إعادة المحاولة</button>
-      <button id="pErrBack" type="button" style="color:rgba(255,255,255,.7);font-weight:700;">رجوع</button>
-    </div>`;
-  document.body.appendChild(p);
-
-  const v = $("#pv");
-  v.addEventListener("play", () => { $("#pPlay").innerHTML = ICON.pause; scheduleHide(); });
-  v.addEventListener("pause", () => { $("#pPlay").innerHTML = ICON.play; showUI(true); });
-  v.addEventListener("waiting", () => { $("#pSpin").style.display = "block"; });
-  v.addEventListener("canplay", () => { $("#pSpin").style.display = "none"; });
-  v.addEventListener("playing", () => { $("#pSpin").style.display = "none"; });
-  v.addEventListener("loadedmetadata", () => {
-    $("#pDur").textContent = fmtTime(v.duration);
-    let pos = 0;
-    try { pos = +localStorage.getItem(POS_KEY + (curItem ? curItem.title : "")) || 0; } catch (_) {}
-    if (pos > 15 && v.duration && pos < v.duration - 30) { v.currentTime = pos; toast("تم استكمال المشاهدة من حيث توقفت"); }
-  });
-  v.addEventListener("timeupdate", () => {
-    if (!dragging && v.duration) { $("#pSeek").value = Math.round((v.currentTime / v.duration) * 1000); }
-    $("#pCur").textContent = fmtTime(v.currentTime);
-    savePos(false);
-  });
-  v.addEventListener("ended", () => { savePos(true); $("#pPlay").innerHTML = ICON.play; showUI(true); });
-  v.addEventListener("error", () => { if (v.getAttribute("src")) showErr(); });
-
-  $("#pTap").onclick = (e) => {
-    const now = Date.now();
-    const r = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width;
-    if (now - lastTap < 320 && (x < 0.33 || x > 0.67)) { skip(x < 0.33 ? -10 : 10); lastTap = 0; return; }
-    lastTap = now;
-    setTimeout(() => { if (lastTap === now) toggleUI(); }, 330);
-  };
-  $("#pPlay").onclick = () => { if (v.paused) v.play().catch(() => {}); else v.pause(); };
-  $("#pRw").onclick = () => skip(-10);
-  $("#pFf").onclick = () => skip(10);
-  $("#pBack").onclick = closePlayer;
-  $("#pErrBack").onclick = closePlayer;
-  $("#pRetry").onclick = () => { hideErr(); attachSrc(v, curItem.video); v.play().catch(() => {}); };
-  $("#pSpeed").onclick = () => {
-    speedIdx = (speedIdx + 1) % SPEEDS.length;
-    v.playbackRate = SPEEDS[speedIdx];
-    $("#pSpeed").textContent = SPEEDS[speedIdx] + "x";
-    scheduleHide();
-  };
-  $("#pFs").onclick = toggleFs;
-  const seek = $("#pSeek");
-  seek.addEventListener("input", () => {
-    dragging = true;
-    if (v.duration) { const t = (seek.value / 1000) * v.duration; $("#pCur").textContent = fmtTime(t); }
-    clearTimeout(ctrlTimer);
-  });
-  seek.addEventListener("change", () => {
-    if (v.duration) v.currentTime = (seek.value / 1000) * v.duration;
-    dragging = false;
-    scheduleHide();
-  });
-}
-
-function toast(msg) {
-  const t = $("#pToast");
-  t.textContent = msg; t.style.display = "block";
-  clearTimeout(toast._t);
-  toast._t = setTimeout(() => { t.style.display = "none"; }, 1800);
-}
-function showUI(keep) {
-  const ui = $("#pUI");
-  ui.style.opacity = "1"; ui.style.visibility = "visible";
-  clearTimeout(ctrlTimer);
-  if (!keep) scheduleHide();
-}
-function scheduleHide() {
-  clearTimeout(ctrlTimer);
-  ctrlTimer = setTimeout(() => {
-    const v = $("#pv");
-    if (v && !v.paused && !dragging) { const ui = $("#pUI"); ui.style.opacity = "0"; ui.style.visibility = "hidden"; }
-  }, 3200);
-}
-function toggleUI() {
-  const ui = $("#pUI");
-  if (ui.style.visibility === "hidden") showUI(); else { ui.style.opacity = "0"; ui.style.visibility = "hidden"; }
-}
-function skip(sec) {
-  const v = $("#pv");
-  if (!v.duration) return;
-  v.currentTime = Math.min(v.duration, Math.max(0, v.currentTime + sec));
-  toast(sec > 0 ? "+10 ثوانٍ" : "-10 ثوانٍ");
-  showUI();
-}
-function showErr() { $("#pSpin").style.display = "none"; $("#pErr").style.display = "flex"; }
-function hideErr() { $("#pErr").style.display = "none"; }
-
-async function toggleFs() {
-  const p = $("#player");
-  try {
-    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-      await (p.requestFullscreen ? p.requestFullscreen() : p.webkitRequestFullscreen());
-      try { await screen.orientation.lock("landscape"); } catch (_) {}
-    } else {
-      try { screen.orientation.unlock(); } catch (_) {}
-      await (document.exitFullscreen ? document.exitFullscreen() : document.webkitExitFullscreen());
-    }
-  } catch (_) { toast("وضع ملء الشاشة غير مدعوم على هذا الجهاز"); }
-  scheduleHide();
-}
-
-function savePos(force) {
-  const v = $("#pv");
-  if (!curItem || !v || !v.duration) return;
-  const now = Date.now();
-  if (!force && now - lastSave < 5000) return;
-  lastSave = now;
-  try {
-    if (v.currentTime > v.duration - 30) localStorage.removeItem(POS_KEY + curItem.title);
-    else localStorage.setItem(POS_KEY + curItem.title, String(Math.floor(v.currentTime)));
-  } catch (_) {}
-}
-
-function loadHlsLib() {
-  return new Promise((res, rej) => {
-    if (window.Hls) return res();
-    const s = document.createElement("script");
-    s.src = "https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js";
-    s.onload = res; s.onerror = rej;
-    document.head.appendChild(s);
-  });
-}
-function attachSrc(v, url) {
-  if (hlsInst) { hlsInst.destroy(); hlsInst = null; }
-  $("#pSpin").style.display = "block";
-  const isHls = /\.m3u8(\?|$)/i.test(url);
-  if (isHls && !v.canPlayType("application/vnd.apple.mpegurl")) {
-    loadHlsLib().then(() => {
-      if (window.Hls && Hls.isSupported()) {
-        hlsInst = new Hls();
-        hlsInst.on(Hls.Events.ERROR, (_, d) => { if (d.fatal) showErr(); });
-        hlsInst.loadSource(url);
-        hlsInst.attachMedia(v);
-      } else { v.src = url; }
-    }).catch(showErr);
-  } else {
-    v.src = url;
-  }
-}
-
-async function requestWake() { try { wakeLock = await navigator.wakeLock.request("screen"); } catch (_) {} }
-function releaseWake() { try { if (wakeLock) wakeLock.release(); } catch (_) {} wakeLock = null; }
-
-function openPlayer(id) {
-  const it = ITEMS[id];
-  if (!it || !it.video) return;
-  buildPlayer();
-  curItem = it;
-  const p = $("#player"), v = $("#pv");
-  $("#pTitle").textContent = it.title;
-  $("#pCur").textContent = "0:00"; $("#pDur").textContent = "0:00"; $("#pSeek").value = 0;
-  speedIdx = 0; v.playbackRate = 1; $("#pSpeed").textContent = "1x";
-  $("#pPlay").innerHTML = ICON.play;
-  hideErr();
-  p.style.display = "block";
-  document.body.style.overflow = "hidden";
-  playerOpen = true;
-  try { history.pushState({ wnPlayer: 1 }, ""); } catch (_) {}
-  v.autoplay = true;
-  attachSrc(v, it.video);
-  v.play().catch(() => {});
-  showUI();
-  requestWake();
-}
-function teardownPlayer() {
-  if (!playerOpen) return;
-  playerOpen = false;
-  const p = $("#player"), v = $("#pv");
-  savePos(true);
-  try { v.pause(); } catch (_) {}
-  if (hlsInst) { hlsInst.destroy(); hlsInst = null; }
-  v.removeAttribute("src"); v.load();
-  p.style.display = "none";
-  document.body.style.overflow = $("#modal").classList.contains("hidden") ? "" : "hidden";
-  try { if (document.fullscreenElement) document.exitFullscreen(); screen.orientation.unlock(); } catch (_) {}
-  releaseWake();
-  clearTimeout(ctrlTimer);
-}
-function closePlayer() {
-  if (!playerOpen) return;
-  const had = history.state && history.state.wnPlayer;
-  teardownPlayer();
-  if (had) { try { history.back(); } catch (_) {} }
-}
-window.addEventListener("popstate", teardownPlayer);
 
 /* ====================== الأحداث ====================== */
 document.addEventListener("click", (e) => {
@@ -936,15 +675,13 @@ document.addEventListener("click", (e) => {
   if (e.target.closest("[data-fav]")) return toggleFav();
   const star = e.target.closest("[data-star]");
   if (star) return rate(+star.dataset.star);
-  const pl = e.target.closest("[data-play]");
-  if (pl) return openPlayer(+pl.dataset.play);
   const open = e.target.closest("[data-open]");
   if (open) return openModal(+open.dataset.open);
   const cat = e.target.closest("[data-cat]");
   if (cat) { activeCat = cat.dataset.cat; buildChips(); applyFilters(); window.scrollTo({ top: $("#chips").offsetTop - 80, behavior: "smooth" }); return; }
   if (e.target.id === "modalBack" || e.target.closest("#closeModal")) closeModal();
 });
-document.addEventListener("keydown", (e) => { if (e.key === "Escape") { if (playerOpen) closePlayer(); else closeModal(); } });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
 
 let searchTimer;
 $("#search").addEventListener("input", (e) => {
@@ -970,8 +707,6 @@ $("#search").addEventListener("input", (e) => {
   });
 })();
 let deferredPrompt = null;
-const CHANNEL_INVITE = "https://t.me/+xZqlT9SXLzplOTlk";
-const JOIN_KEY = "wn_join_seen_v1";
 const APK_URL = "https://github.com/kederssllom-bot/cinema/releases/download/latest/WatchNow.apk";
 const IN_APP = /WatchNowApp/i.test(navigator.userAgent) || !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 const INST_KEY = "media_install_dismissed_v1";
@@ -1015,30 +750,10 @@ function showApkPopup() {
     <button id="apkClose" type="button" style="margin-top:14px;color:rgba(255,255,255,.5);font-size:13px;">ليس الآن</button>
   </div>`;
   document.body.appendChild(o);
-  $("#apkClose").onclick = () => { o.remove(); setTimeout(showJoinPopup, 300); };
+  $("#apkClose").onclick = () => o.remove();
 }
 setTimeout(showApkPopup, 800);
 
-
-/* ====================== نافذة الانضمام للقناة (أول مرة فقط) ====================== */
-function showJoinPopup() {
-  try { if (localStorage.getItem(JOIN_KEY)) return; } catch (_) {}
-  if ($("#joinPopup") || $("#apkPopup")) return;
-  const mark = () => { try { localStorage.setItem(JOIN_KEY, "1"); } catch (_) {} };
-  const o = document.createElement("div");
-  o.id = "joinPopup";
-  o.style.cssText = "position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;padding:24px;";
-  o.innerHTML = `<div class="fade-in" style="background:#140a0b;border:1.5px solid #e50914;box-shadow:0 0 36px rgba(229,9,20,.4);border-radius:20px;padding:26px 22px;max-width:350px;width:100%;text-align:center;">
-    <div style="display:inline-block;background:#e50914;color:#fff;font-weight:900;font-size:13px;padding:5px 16px;border-radius:999px;margin-bottom:14px;letter-spacing:.3px;">⚠ تنبيه هام</div>
-    <div style="font-size:21px;font-weight:900;margin-bottom:12px;color:#d9b45f;line-height:1.5;">الانضمام إلى القناة إلزامي</div>
-    <div style="font-size:14.5px;color:rgba(255,255,255,.82);line-height:1.9;margin-bottom:20px;">يرجى الانضمام إلى قناتنا على تيليجرام لتتمكن من مشاهدة الأفلام والفيديوهات، <span style="color:#ff4d57;font-weight:800;">ودون الانضمام لن يعمل أي فيديو.</span></div>
-    <a id="joinGo" href="${CHANNEL_INVITE}" target="_blank" rel="noopener noreferrer" style="display:block;background:linear-gradient(135deg,#e50914,#b20710);color:#fff;font-weight:900;font-size:17px;padding:14px;border-radius:12px;text-decoration:none;box-shadow:0 6px 20px rgba(229,9,20,.5);animation:joinPulse 1.8s ease-in-out infinite;">الانضمام إلى القناة</a>
-    <button id="joinDone" type="button" style="margin-top:14px;color:rgba(255,255,255,.7);font-size:14px;font-weight:700;border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:9px 22px;">تم الانضمام</button>
-  </div>`;
-  document.body.appendChild(o);
-  $("#joinGo").addEventListener("click", mark);
-  $("#joinDone").onclick = () => { mark(); o.remove(); };
-}
 
 /* ====================== شاشة التحميل ====================== */
 function hideSplash() {
@@ -1053,7 +768,7 @@ function hideSplash() {
       b.style.animation = "none"; b.style.width = w; void b.offsetWidth;
       b.style.transition = "width .25s ease"; b.style.width = "100%";
     }
-    setTimeout(() => { s.style.opacity = "0"; setTimeout(() => { s.remove(); setTimeout(showJoinPopup, 400); }, 500); }, 250);
+    setTimeout(() => { s.style.opacity = "0"; setTimeout(() => { s.remove(); }, 500); }, 250);
   }, wait);
 }
 setTimeout(hideSplash, 10000);
