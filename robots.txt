@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kederssllom-bot.github.io/cinema/sitemap.xml
